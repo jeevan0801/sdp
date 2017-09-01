@@ -1,0 +1,27 @@
+server:
+  port: 8080
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  jersey:
+    application-path: /api
+
+### 上游公司信息
+spInfo:
+  sp-info-list:
+    -
+      spName: "鑫业之游"
+      baseUrl: "http://www.shockwin.com/iqiyi/account_order"
+      spId: "001"
+      key: "bjxyzy2017"
+      accountId: "xyzy"
+      otherParams:
+        channel: "bjxyzy"
+    -
+      spName: "北京腾瑞明"
+      baseUrl: "http://101.200.72.49:8080/qq-coins/qqApi/zhichong"
+      spId: "002"
+      key: "3392cd912df17526da7e06fb7161a176"
+      accountId: "91019"
