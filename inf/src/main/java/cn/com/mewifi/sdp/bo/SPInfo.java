@@ -1,4 +1,4 @@
-package cn.com.mewifi.bo;
+package cn.com.mewifi.sdp.bo;
 
 import lombok.Data;
 

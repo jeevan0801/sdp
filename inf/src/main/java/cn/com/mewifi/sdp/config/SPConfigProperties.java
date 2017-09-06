@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import cn.com.mewifi.bo.SPInfo;
+import cn.com.mewifi.sdp.bo.SPInfo;
 import lombok.Data;
 
 /**

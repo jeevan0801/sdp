@@ -1,6 +1,6 @@
 package cn.com.mewifi.main;
 
-import cn.com.mewifi.sdp.config.SPConfigProperties;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,11 +20,17 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableConfigurationProperties()
 @EnableWebMvc
 public class InfApplication extends SpringBootServletInitializer {
+    // public class InfApplication {
+    
     /**
      * @param args
      */
     public static void main(String[] args) {
-        // SpringApplication.run(InfApplication.class, args);
-        new InfApplication().configure(new SpringApplicationBuilder(InfApplication.class)).run(args);
+         SpringApplication.run(InfApplication.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(InfApplication.class);
     }
 }

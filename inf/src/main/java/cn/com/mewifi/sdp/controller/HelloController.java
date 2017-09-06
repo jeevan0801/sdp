@@ -12,10 +12,9 @@ import lombok.extern.slf4j.Slf4j;
  *
  * date: 2017/8/30 16:29
  */
-@RestController
+//@RestController
 @Slf4j
 public class HelloController {
-    
     /**
      * test
      * 

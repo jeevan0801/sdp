@@ -1,9 +1,6 @@
 package cn.com.mewifi.core.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * description: 签名工具类
@@ -38,6 +35,29 @@ public class SignUtil {
         }
         
         return prestr;
+    }
+    
+    /**
+     * 从map中移除key
+     * @param params map
+     * @param removeKeys 需要移除的keys
+     * @return map
+     */
+    public static Map<String, Object> paraFilte(Map<String, Object> params, List<String> removeKeys) {
+        Map<String, Object> rs = new HashMap<>();
+        if (params == null || params.size() <= 0) {
+            return rs;
+        }
+
+        for (String key : params.keySet()) {
+            Object value = params.get(key);
+            if (value == null || value.equals("") || removeKeys.contains(key)) {
+                continue;
+            }
+            rs.put(key, value);
+        }
+        
+        return rs;
     }
     
 }

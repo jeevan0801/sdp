@@ -1,6 +1,9 @@
 package cn.com.mewifi.core.util.third;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * description: 第三方提供的工具类
@@ -38,5 +41,58 @@ public class MD5Util {
         catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+    
+    /**
+     * wo+提供的加密方法
+     * @param tm
+     * @param key
+     * @return
+     */
+    public static String digestWO(TreeMap<String, String> tm, String key) {
+        StringBuffer buf = new StringBuffer();
+        for (Map.Entry<String, String> en : tm.entrySet()) {
+            String name = en.getKey();
+            String value = en.getValue();
+            if (value != null && value.length() > 0 && !"null".equals(value)) {
+                buf.append(name).append('=').append(value).append('&');
+            }
+        }
+        String bufString = buf.toString();
+        
+        String verifyReq = getKeyedDigestGBK(bufString.substring(0, bufString.length() - 1), key);
+        
+        return verifyReq;
+    }
+    
+    /** wo+提供的加密方法
+     * @param strSrc
+     * @param key
+     * @return
+     */
+    private static String getKeyedDigestGBK(String strSrc, String key) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(strSrc.getBytes("GBK"));
+            
+            String result = "";
+            byte[] temp;
+            temp = md5.digest(key.getBytes("UTF8"));
+            for (int i = 0; i < temp.length; i++) {
+                result += Integer.toHexString((0x000000ff & temp[i]) | 0xffffff00).substring(6);
+            }
+            
+            return result.toUpperCase();
+            
+        }
+        catch (NoSuchAlgorithmException e) {
+            
+            e.printStackTrace();
+            
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

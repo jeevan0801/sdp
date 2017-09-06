@@ -1,4 +1,4 @@
-package test.cn.com.mewifi.sdp.service.impl;
+package cn.com.mewifi.sdp.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cn.com.mewifi.core.util.MD5Util;
-import cn.com.mewifi.sdp.service.impl.MemberServiceTengRuiMing;
 
 /**
  * MemberService_TengRuiMing Tester.
@@ -24,7 +23,7 @@ import cn.com.mewifi.sdp.service.impl.MemberServiceTengRuiMing;
  */
 public class MemberService_TengRuiMingTest {
     
-    MemberServiceTengRuiMing service = new MemberServiceTengRuiMing();
+    MemberServiceImplTengRuiMing service = new MemberServiceImplTengRuiMing();
     
     private String mid = "91019";
     
@@ -93,7 +92,7 @@ public class MemberService_TengRuiMingTest {
     @Test
     public void testQueryOrder()
         throws Exception {
-        // TODO: Test goes here...
+        service.queryOrder();
     }
     
 }

@@ -21,7 +21,7 @@ import cn.com.mewifi.sdp.service.IMemberService;
  * date: 2017/8/31 13:49
  */
 @Service
-public class MemberServiceTengRuiMing implements IMemberService {
+public class MemberServiceImplTengRuiMing implements IMemberService {
     
     private String mid = "91019";
     
@@ -62,9 +62,11 @@ public class MemberServiceTengRuiMing implements IMemberService {
         String url = "http://101.200.72.49:8080/qq-coins/qqApi/zhichong";
         
         String action = "query";
-        String orderid = "";
+        String orderid = "20170831135732001";
         
         Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put("m", mid);
         params.put("action", action);
         params.put("orderid", orderid);
         params.put("s", MD5Util.sign(action + mid + orderid + key));

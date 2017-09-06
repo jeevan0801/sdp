@@ -41,20 +41,11 @@ public class HttpUtil {
     }
     
     /**
-     * get() 返回字符串
-     * 
-     * @param url get请求的url
-     * @param params
-     * @return String
+     * 将map中的参数拼接成url
+     * @param params 参数map
+     * @return eg: a=1&b=2&c=3
      */
-    public static String getForString(String url, Map<String, Object> params) {
-        
-        String rs = "";
-        
-        if (StringUtils.isEmpty(url)) {
-            return "";
-        }
-        
+    public static String getUrlFromMap(Map<String, Object> params) {
         StringBuffer tempParams = new StringBuffer();
         
         try {
@@ -72,8 +63,27 @@ public class HttpUtil {
         catch (Exception e) {
             e.printStackTrace();
         }
+        return tempParams.toString();
+    }
+    
+    /**
+     * get() 返回字符串
+     * 
+     * @param url get请求的url
+     * @param params
+     * @return String
+     */
+    public static String getForString(String url, Map<String, Object> params) {
         
-        url = url + "?" + tempParams.toString();
+        String rs = "";
+        
+        if (StringUtils.isEmpty(url)) {
+            return "";
+        }
+
+        if (params != null && params.size()>0) {
+            url = url + "?" + getUrlFromMap(params);
+        }
         Request request = new Request.Builder().url(url).build();
         Call call = HttpUtil.getInstance().newCall(request);
         Response response = null;
@@ -95,16 +105,15 @@ public class HttpUtil {
      * @param params
      * @return String
      */
-    public static String postForString(String url, Map<String, String> params) {
+    public static String postForString(String url, Map<String, Object> params) {
         String rs = "";
-        
-        if (params == null) {
-            return "";
-        }
+
         
         FormBody.Builder builder = new FormBody.Builder();
-        for (String key : params.keySet()) {
-            builder.add(key, params.get(key));
+        if (params != null) {
+            for (String key : params.keySet()) {
+                builder.add(key, (String)params.get(key));
+            }
         }
         
         RequestBody formBody = builder.build();
@@ -154,7 +163,7 @@ public class HttpUtil {
      * @param params
      * @return JSONObject
      */
-    public static JSONObject postForJSON(String url, Map<String, String> params) {
+    public static JSONObject postForJSON(String url, Map<String, Object> params) {
         String resultString = postForString(url, params);
         return JSONObject.parseObject(resultString);
     }
