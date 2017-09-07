@@ -1,6 +1,6 @@
 server:
   port: 8080
-  context-path: /inf/
+  #context-path: /inf/
 spring:
   mvc:
     view:
@@ -10,7 +10,9 @@ spring:
     application-path: /api
 
 
-### 上游公司信息
+
+
+### 上游公司信息(示例,2017-09-07改为查数据库)
 spInfo:
   sp-info-list:
     -
@@ -27,3 +29,5 @@ spInfo:
       spId: "002"
       key: "3392cd912df17526da7e06fb7161a176"
       accountId: "91019"
+
+### druid

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 
-import cn.com.mewifi.sdp.bo.SPInfo;
-import cn.com.mewifi.sdp.config.SPConfigProperties;
+import cn.com.mewifi.sdp.bo.db.SPInfo;
 import cn.com.mewifi.sdp.service.IMemberService;
 import cn.com.mewifi.sdp.service.IPayService;
+import cn.com.mewifi.sdp.service.ISPInfoService;
 import cn.com.mewifi.sdp.service.ISmsService;
 import cn.com.mewifi.sdp.util.ResultVOUtil;
 import cn.com.mewifi.sdp.vo.ResultVO;
@@ -44,13 +44,14 @@ public class MemberController {
     private IPayService payService;
     
     @Autowired
-    private SPConfigProperties spConfigProperties;
+    // private SPConfigProperties spConfigProperties;
+    private ISPInfoService spinfoService;
     
     @Autowired
     @Qualifier("smsServiceImplDuanXinWang")
     // @Qualifier("smsServiceImplWO")
     private ISmsService smsService;
-
+    
     /**
      * 提交订单
      * @param orderId
@@ -68,7 +69,8 @@ public class MemberController {
     @PostMapping(value = "/order")
     public ResultVO order(@RequestParam("orderId") String orderId, @RequestParam("account") String account,
         @RequestParam("paymentId") String paymentId, @RequestParam("goodsId") String goodsId) {
-        List<SPInfo> spInfoList = spConfigProperties.getSpInfoList();
+        // List<SPInfo> spInfoList = spConfigProperties.getSpInfoList();
+        List<SPInfo> spInfoList = spinfoService.selectAll();
         for (SPInfo sp : spInfoList) {
             log.info(sp.toString());
         }
@@ -87,7 +89,7 @@ public class MemberController {
         ResultVO rs = ResultVOUtil.success(rsJson);
         return rs;
     }
-
+    
     /**
      * 支付接口
      * @param orderId
@@ -104,7 +106,7 @@ public class MemberController {
         ResultVO rs = ResultVOUtil.success(url);
         return rs;
     }
-
+    
     /**
      * 短信验证码
      * @param mobileNo

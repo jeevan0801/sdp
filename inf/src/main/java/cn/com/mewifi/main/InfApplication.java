@@ -26,9 +26,9 @@ public class InfApplication extends SpringBootServletInitializer {
      * @param args
      */
     public static void main(String[] args) {
-         SpringApplication.run(InfApplication.class, args);
+        SpringApplication.run(InfApplication.class, args);
     }
-
+    
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(InfApplication.class);

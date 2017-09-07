@@ -10,7 +10,7 @@ import java.util.Map;
  * date: 2017/8/31 19:24
  */
 @Data
-public class SPInfo {
+public class SPInfoBak {
 
     private String baseUrl; //接口基础url
     private String spName; //sp名称

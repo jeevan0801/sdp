@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import cn.com.mewifi.sdp.bo.SPInfo;
+import cn.com.mewifi.sdp.bo.db.SPInfo;
 import lombok.Data;
 
 /**
@@ -18,5 +18,5 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "spInfo")
 public class SPConfigProperties {
     private List<SPInfo> spInfoList;
-
+    
 }
