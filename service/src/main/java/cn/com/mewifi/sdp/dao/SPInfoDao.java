@@ -14,8 +14,17 @@ import cn.com.mewifi.sdp.bo.db.SPInfo;
  */
 @Mapper
 public interface SPInfoDao {
-    
+
+    /**
+     * 按spId查询spinfo
+     * @param spId
+     * @return
+     */
     SPInfo selectById(@Param("spId") String spId);
-    
+
+    /**
+     * 查询所有spinfo
+     * @return
+     */
     List<SPInfo> selectAll();
 }
