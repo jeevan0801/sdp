@@ -48,7 +48,7 @@ public class MemberService_TengRuiMingTest {
     @Test
     public void testOrder()
         throws Exception {
-        // TODO: Test goes here...
+
         
         String url = "http://101.200.72.49:8080/qq-coins/qqApi/zhichong";
         
@@ -80,7 +80,7 @@ public class MemberService_TengRuiMingTest {
     @Test
     public void testQueryBalance()
         throws Exception {
-        // TODO: Test goes here...
+
         service.queryBalance();
     }
     

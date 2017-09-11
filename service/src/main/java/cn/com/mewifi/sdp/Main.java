@@ -36,10 +36,10 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... strings)
         throws Exception {
-        SPInfo spInfo = spInfoDao.selectById("001");
-        log.info(spInfo.toString());
-        
-        List<SPInfo> spInfoList = spInfoDao.selectAll();
-        log.info(spInfoList.toString());
+//        SPInfo spInfo = spInfoDao.selectById("001");
+//        log.info(spInfo.toString());
+//
+//        List<SPInfo> spInfoList = spInfoDao.selectAll();
+//        log.info(spInfoList.toString());
     }
 }

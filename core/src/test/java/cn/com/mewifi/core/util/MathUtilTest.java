@@ -34,7 +34,7 @@ public class MathUtilTest {
     @Test
     public void testGetRandomString()
         throws Exception {
-        // TODO: Test goes here...
+
     }
     
     /** 

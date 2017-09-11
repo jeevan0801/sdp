@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.com.mewifi.sdp.bo.db.SPInfo;
+import cn.com.mewifi.sdp.service.IAuthCodeService;
 import cn.com.mewifi.sdp.service.IMemberService;
 import cn.com.mewifi.sdp.service.IPayService;
 import cn.com.mewifi.sdp.service.ISPInfoService;
-import cn.com.mewifi.sdp.service.ISmsService;
 import cn.com.mewifi.sdp.util.ResultVOUtil;
 import cn.com.mewifi.sdp.vo.ResultVO;
 import io.swagger.annotations.Api;
@@ -48,9 +48,9 @@ public class MemberController {
     private ISPInfoService spinfoService;
     
     @Autowired
-    @Qualifier("smsServiceImplDuanXinWang")
+    // @Qualifier("smsServiceImplDuanXinWang")
     // @Qualifier("smsServiceImplWO")
-    private ISmsService smsService;
+    private IAuthCodeService authCodeService;
     
     /**
      * 提交订单
@@ -117,7 +117,7 @@ public class MemberController {
         @ApiImplicitParam(name = "mobileNo", value = "手机号码", required = true, dataType = "String", paramType = "query")})
     @PostMapping(value = "/smsAuth")
     public ResultVO smsAuth(@RequestParam("mobileNo") String mobileNo) {
-        JSONObject rsJson = smsService.sendAuthCode(mobileNo);
+        JSONObject rsJson = authCodeService.sendAuthCode(mobileNo);
         ResultVO rs = ResultVOUtil.success(rsJson);
         return rs;
     }

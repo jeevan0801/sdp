@@ -32,7 +32,7 @@ public class SmsServiceImplDuanXinWangTest {
     @Test
     public void testSendAuthCode()
         throws Exception {
-        service.sendAuthCode("18070288774");
+//        service.sendAuthCode("18070288774");
     }
     
 }
