@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.SendMessageLogMapper">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.db.SendMessageLog">
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="MESSAGECODE" jdbcType="VARCHAR" property="messagecode" />
+    <result column="SENDER" jdbcType="VARCHAR" property="sender" />
+    <result column="RECEIVER" jdbcType="VARCHAR" property="receiver" />
+    <result column="LOGDATE" jdbcType="DATE" property="logdate" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="MESSAGETYPE" jdbcType="VARCHAR" property="messagetype" />
+    <result column="SENDCHANNEL" jdbcType="VARCHAR" property="sendchannel" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.com.mewifi.sdp.bo.db.SendMessageLog">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_pub_sendmessageLog.nextval FROM DUAL
+    </selectKey>
+    insert into T_PUB_SENDMESSAGELOG (ID, MESSAGECODE, SENDER, 
+      RECEIVER, LOGDATE, CONTENT, 
+      MESSAGETYPE, SENDCHANNEL)
+    values (#{id,jdbcType=DECIMAL}, #{messagecode,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR},
+      #{receiver,jdbcType=VARCHAR}, sysdate, #{content,jdbcType=VARCHAR},
+      #{messagetype,jdbcType=VARCHAR}, #{sendchannel,jdbcType=VARCHAR})
+  </insert>
+</mapper>

@@ -58,7 +58,7 @@ public class SmsServiceImplDuanXinWang extends AbstractSmsService {// implements
         
         url += HttpUtil.getUrlFromMap(params);
         // 0,2017091215035099562008336,0,1,0,提交成功
-        String rs = "0,2017091215035099562008336,0,1,0,提交成功";// HttpUtil.postForString(url, null);
+        String rs = HttpUtil.postForString(url, null);
         JSONObject rsJson = this.convertRs(rs);
         
         SendMessageLog sendMessageLog = new SendMessageLog();

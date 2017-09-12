@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.AuthCodeLogMapper">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.db.AuthCodeLog">
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="LOGDATE" jdbcType="DATE" property="logdate" />
+    <result column="RECEIVER" jdbcType="VARCHAR" property="receiver" />
+    <result column="AUTHTYPE" jdbcType="VARCHAR" property="authtype" />
+    <result column="AUTHCODE" jdbcType="VARCHAR" property="authcode" />
+    <result column="ISCHECKED" jdbcType="VARCHAR" property="ischecked" />
+    <result column="SENDER" jdbcType="VARCHAR" property="sender" />
+    <result column="MESSAGEID" jdbcType="DECIMAL" property="messageid" />
+  </resultMap>
+
+  <select id="countOfLastDay" resultType="int">
+    select count(*) from T_PUB_AUTHCODELOG t where t.LOGDATE>sysdate-1 and t.RECEIVER=#{receiver}
+  </select>
+
+  <select id="countOfLastInterval"  resultType="int">
+    select count(*) from T_PUB_AUTHCODELOG t where t.LOGDATE>sysdate-#{interval}/24/60/60 and t.RECEIVER=#{receiver}
+  </select>
+
+  <select id="getLastInfo" resultType="AuthCodeLog">
+    select * from T_PUB_AUTHCODELOG t where t.LOGDATE>sysdate-1/24 and t.RECEIVER=#{receiver} and t.sender=#{clientId} and t.ISCHECKED='0' order by t.id desc
+  </select>
+
+  <insert id="insert" parameterType="cn.com.mewifi.sdp.bo.db.AuthCodeLog">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_PUB_AUTHCODELOG.nextval FROM DUAL
+    </selectKey>
+    insert into T_PUB_AUTHCODELOG (ID, LOGDATE, RECEIVER, 
+      AUTHTYPE, AUTHCODE,
+      ISCHECKED, SENDER, MESSAGEID
+      )
+    values (SEQ_pub_authcodeLog.nextval, sysdate, #{receiver,jdbcType=VARCHAR},
+      #{authtype,jdbcType=VARCHAR}, #{authcode,jdbcType=VARCHAR},
+      #{ischecked,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR}, #{messageid,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <update id="updateStatusById" parameterType="java.math.BigDecimal">
+    update T_PUB_AUTHCODELOG t set t.ischecked = '1' where t.id=#{id,jdbcType=DECIMAL}
+  </update>
+</mapper>
