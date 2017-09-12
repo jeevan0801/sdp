@@ -1,5 +1,6 @@
 package cn.com.mewifi.sdp.util;
 
+import cn.com.mewifi.sdp.constant.Result;
 import cn.com.mewifi.sdp.vo.ResultVO;
 
 /**
@@ -16,11 +17,19 @@ public class ResultVOUtil {
     public static ResultVO success(Object object) {
         ResultVO resultVO = new ResultVO();
         resultVO.setData(object);
-        resultVO.setCode("0");
-        resultVO.setMsg("成功");
+        resultVO.setCode(Result.pub_success.getCode());
+        resultVO.setMsg(Result.pub_success.getMsg());
         return resultVO;
     }
 
+    public static ResultVO success(Result rs) {
+        ResultVO resultVO = new ResultVO();
+        resultVO.setData(null);
+        resultVO.setCode(rs.getCode());
+        resultVO.setMsg(rs.getMsg());
+        return resultVO;
+    }
+    
     /**
      * 成功 data为空
      * @return
@@ -28,7 +37,7 @@ public class ResultVOUtil {
     public static ResultVO success() {
         return success(null);
     }
-
+    
     /**
      * 失败
      * @param code 结果标识
@@ -39,6 +48,17 @@ public class ResultVOUtil {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(code);
         resultVO.setMsg(msg);
+        return resultVO;
+    }
+
+    /** 失败
+     * @param rs enum
+     * @return
+     */
+    public static ResultVO error(Result rs) {
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(rs.getCode());
+        resultVO.setMsg(rs.getMsg());
         return resultVO;
     }
 }

@@ -3,6 +3,7 @@ package cn.com.mewifi.sdp.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -10,7 +11,11 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.com.mewifi.core.util.HttpUtil;
 import cn.com.mewifi.core.util.JSONUtil;
+import cn.com.mewifi.sdp.bo.db.SendMessageLog;
+import cn.com.mewifi.sdp.constant.PubConstant;
+import cn.com.mewifi.sdp.dao.SendMessageLogMapper;
 import cn.com.mewifi.sdp.service.AbstractSmsService;
+import cn.com.mewifi.sdp.service.IPubService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,7 +28,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SmsServiceImplDuanXinWang extends AbstractSmsService {// implements ISmsService {
     
+    @Autowired
+    private SendMessageLogMapper sendMessageLogMapper;
+    
+    @Autowired
+    private IPubService pubService;
+
+    @Override
     public JSONObject sendByContent(String mobileNo, String content) {
+        // 上游公司拼音, 驼峰式
+        // todo: 以下信息要从数据库中获取
+        super.setChannelCode("duanXinWang");
+        
         String url = "http://web.duanxinwang.cc/asmx/smsservice.aspx?";
         String account = "dxwznwx007";
         String passwd = "A117AAA9B1262FD3E59ED25E9CB5";
@@ -41,8 +57,22 @@ public class SmsServiceImplDuanXinWang extends AbstractSmsService {// implements
         params.put("extno", "");
         
         url += HttpUtil.getUrlFromMap(params);
-        String rs = HttpUtil.postForString(url, null);
-        return this.convertRs(rs);
+        // 0,2017091215035099562008336,0,1,0,提交成功
+        String rs = "0,2017091215035099562008336,0,1,0,提交成功";// HttpUtil.postForString(url, null);
+        JSONObject rsJson = this.convertRs(rs);
+        
+        SendMessageLog sendMessageLog = new SendMessageLog();
+        sendMessageLog.setSender(caller);
+        sendMessageLog.setReceiver(mobileNo);
+        sendMessageLog.setContent(content);
+        sendMessageLog.setMessagecode(
+            pubService.getSerialNo(PubConstant.ModuleType.SMS.getCode(), 20, PubConstant.Bool.YES.getCode()));
+        sendMessageLog.setMessagetype(PubConstant.MessageType.SMS.getCode());
+        sendMessageLog.setSendchannel(super.getChannelCode());
+        Integer smsLogId = sendMessageLogMapper.insert(sendMessageLog);
+        super.setLogId(smsLogId);
+        
+        return rsJson;
     }
     
     //

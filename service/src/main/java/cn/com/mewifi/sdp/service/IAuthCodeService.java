@@ -1,6 +1,6 @@
 package cn.com.mewifi.sdp.service;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.com.mewifi.sdp.vo.ResultVO;
 
 /**
  * 验证码service, 包括短信, 邮件等
@@ -9,13 +9,13 @@ import com.alibaba.fastjson.JSONObject;
  * date: 2017/9/11 11:26
  */
 public interface IAuthCodeService {
-
+    
     /**
      * 发送验证码
      * @param receiver
      * @return
      */
-    JSONObject sendAuthCode(String receiver);
+    ResultVO sendAuthCode(String receiver,String clientId);
     
     /**
      * 校验短信验证码是否正确
@@ -23,5 +23,5 @@ public interface IAuthCodeService {
      * @param authCode 待验证的验证码
      * @return
      */
-    JSONObject verifyAuthCode(String receiver, String authCode);
+    ResultVO verifyAuthCode(String receiver, String authCode, String clientId);
 }

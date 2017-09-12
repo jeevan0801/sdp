@@ -11,7 +11,7 @@ public enum SPTypeEnum {
     
     private String spType;
     
-    private SPTypeEnum(String spType) {
+    SPTypeEnum(String spType) {
         this.spType = spType;
     }
     

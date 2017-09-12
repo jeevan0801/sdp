@@ -34,6 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST}, origins = "*")
 @Api(value = "会员权益接口")
 public class MemberController {
+
+    // 客户端id
+    //TODO: client暂时写死zzwx
+    private String clientId = "zzwx";
     
     @Autowired
     // @Qualifier("memberServiceImplTengRuiMing")
@@ -66,7 +70,7 @@ public class MemberController {
         @ApiImplicitParam(name = "account", value = "需要充值的会员ID", required = true, dataType = "String", paramType = "query"),
         @ApiImplicitParam(name = "paymentId", value = "付费ID,一般指手机号码", required = true, dataType = "String", paramType = "query"),
         @ApiImplicitParam(name = "goodsId", value = "产品id", required = true, dataType = "String", paramType = "query")})
-    @PostMapping(value = "/order")
+    @PostMapping(value = "/order/")
     public ResultVO order(@RequestParam("orderId") String orderId, @RequestParam("account") String account,
         @RequestParam("paymentId") String paymentId, @RequestParam("goodsId") String goodsId) {
         // List<SPInfo> spInfoList = spConfigProperties.getSpInfoList();
@@ -117,9 +121,23 @@ public class MemberController {
         @ApiImplicitParam(name = "mobileNo", value = "手机号码", required = true, dataType = "String", paramType = "query")})
     @PostMapping(value = "/smsAuth")
     public ResultVO smsAuth(@RequestParam("mobileNo") String mobileNo) {
-        JSONObject rsJson = authCodeService.sendAuthCode(mobileNo);
-        ResultVO rs = ResultVOUtil.success(rsJson);
-        return rs;
+        return authCodeService.sendAuthCode(mobileNo,clientId);
+    }
+
+    /**
+     * 短信码校验
+     * @param mobileNo 手机号码
+     * @param authCode 待校验的验证码
+     * @return
+     */
+    @ApiOperation(value = "短信码校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mobileNo", value = "手机号码", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "authCode", value = "待校验的验证码", required = true, dataType = "String", paramType = "query")
+    })
+    @PostMapping(value = "/smsAuthCodeCheck")
+    public ResultVO smsAuthCodeCheck(@RequestParam("mobileNo") String mobileNo, @RequestParam("authCode") String authCode) {
+        return authCodeService.verifyAuthCode(mobileNo,authCode,clientId);
     }
     
 }

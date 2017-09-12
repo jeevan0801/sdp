@@ -40,7 +40,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>/Users/wangjc/logs/sdp/error.%d.log</fileNamePattern>
+            <fileNamePattern>/Users/wangjc/logs/inf/error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -53,5 +53,6 @@
     </root>
 
     <logger name="org.springframework" level="INFO"/>
+    <logger name="cn.com.mewifi.sdp.dao" level="DEBUG"/>
 
 </configuration>

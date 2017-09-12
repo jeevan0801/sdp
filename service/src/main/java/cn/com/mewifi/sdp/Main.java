@@ -1,7 +1,5 @@
 package cn.com.mewifi.sdp;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
-import cn.com.mewifi.sdp.bo.db.SPInfo;
 import cn.com.mewifi.sdp.dao.SPInfoDao;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,10 +33,10 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... strings)
         throws Exception {
-//        SPInfo spInfo = spInfoDao.selectById("001");
-//        log.info(spInfo.toString());
-//
-//        List<SPInfo> spInfoList = spInfoDao.selectAll();
-//        log.info(spInfoList.toString());
+        // SPInfo spInfo = spInfoDao.selectById("001");
+        // log.info(spInfo.toString());
+        //
+        // List<SPInfo> spInfoList = spInfoDao.selectAll();
+        // log.info(spInfoList.toString());
     }
 }
