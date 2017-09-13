@@ -6,12 +6,12 @@ package cn.com.mewifi.sdp.constant;
  * author: wangjc
  * date: 2017/9/11 13:47
  */
-public enum SPTypeEnum {
-    FLOWDATA("F"), SMS("S"), BILL("B"), MEMBER("M");
+public enum SDPTypeEnum {
+    FLOWDATA("FDP"), SMS("SMS"), BILL("BILL"), MEMBER("MEM");
     
     private String spType;
     
-    SPTypeEnum(String spType) {
+    SDPTypeEnum(String spType) {
         this.spType = spType;
     }
     

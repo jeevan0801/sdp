@@ -23,6 +23,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.ws.rs.QueryParam;
+
 /**
  * description: 会员权益接口
  * author: wangjc
@@ -45,6 +47,7 @@ public class MemberController {
     private IMemberService memberService;
     
     @Autowired
+    @Qualifier("payServiceImplWeiXin")
     private IPayService payService;
     
     @Autowired

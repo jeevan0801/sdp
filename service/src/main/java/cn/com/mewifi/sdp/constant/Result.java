@@ -11,6 +11,7 @@ import lombok.Getter;
 public enum Result {
 
     pub_success("1","success"),
+    pub_exception("9999","系统异常"),
     pub_action_todo("0","todo"),
     pub_action_doing("9","doing"),
     pub_action_finish("1","finish"),

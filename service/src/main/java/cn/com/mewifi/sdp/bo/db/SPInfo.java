@@ -3,7 +3,7 @@ package cn.com.mewifi.sdp.bo.db;
 import java.io.Serializable;
 import java.util.Map;
 
-import cn.com.mewifi.sdp.constant.SPTypeEnum;
+import cn.com.mewifi.sdp.constant.SDPTypeEnum;
 import lombok.Data;
 
 /**
@@ -24,7 +24,7 @@ public class SPInfo implements Serializable {
     
     private String accountId; // sp分配的账号
     
-    private SPTypeEnum spType; // 上游类型:
+    private SDPTypeEnum spType; // 上游类型:
     
     private Map<String, Object> otherParams; // 根据协议需要送的其他参数, 一般是固定的
 }

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 public interface IPayService {
     /**
      * 返回需要跳转的供支付的h5页面url
-     * @param orderId 订单流水号
+     * @param productId 商品id
      * @param fee 支付金额
      * @return
      */
-    String getPayUrl(String orderId, String fee);
+    String getPayUrl(String productId, String fee);
 }

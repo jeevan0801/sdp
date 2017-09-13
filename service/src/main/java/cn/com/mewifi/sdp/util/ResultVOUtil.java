@@ -61,4 +61,17 @@ public class ResultVOUtil {
         resultVO.setMsg(rs.getMsg());
         return resultVO;
     }
+
+    /** 失败
+     * @param rs enum
+     * @param data
+     * @return
+     */
+    public static ResultVO error(Result rs,Object data) {
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(rs.getCode());
+        resultVO.setMsg(rs.getMsg());
+        resultVO.setData(data);
+        return resultVO;
+    }
 }
