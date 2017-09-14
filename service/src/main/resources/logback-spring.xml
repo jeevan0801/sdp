@@ -44,7 +44,7 @@
         </rollingPolicy>
     </appender>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="consoleLog" />
         <!--
         <appender-ref ref="fileInfoLog" />
@@ -53,6 +53,6 @@
     </root>
 
     <logger name="org.springframework" level="INFO"/>
-    <logger name="cn.com.mewifi" level="DEBUG"/>
+    <logger name="cn.com.mewifi.sdp.dao" level="DEBUG"/>
 
 </configuration>

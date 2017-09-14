@@ -4,14 +4,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.mewifi.core.util.*;
+import cn.com.mewifi.sdp.vo.ResultVO;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.com.mewifi.core.util.JSONUtil;
-import cn.com.mewifi.core.util.MathUtil;
-import cn.com.mewifi.core.util.XMLUtil;
 import cn.com.mewifi.sdp.config.PayWeiXinConfig;
 import cn.com.mewifi.sdp.constant.PubConstant;
 import cn.com.mewifi.sdp.constant.SDPTypeEnum;
@@ -32,7 +31,7 @@ public class PayServiceImplWeiXin implements IPayService {
     IPubService pubService;
     
     @Autowired
-    PayWeiXinConfig payWeiXinConfig;
+    private PayWeiXinConfig payWeiXinConfig;
     
     @Override
     public String getPayUrl(String productId, String fee) {
@@ -47,10 +46,10 @@ public class PayServiceImplWeiXin implements IPayService {
         Map<String, Object> params = new HashMap<>();
         params.put("appid", payWeiXinConfig.getAppId()); // 调用接口提交的公众账号ID
         params.put("mch_id", payWeiXinConfig.getMchId()); // 微信支付分配的商户号
-        params.put("nonce_str", MathUtil.getRandomString(32)); // 随机字符串，不长于32位
+        params.put("nonce_str", MathUtil.getRandomString(Integer.valueOf(PubConstant.SysPropertis.lengthOfSerialNo.getValue()))); // 随机字符串，不长于32位
         params.put("body", ""); // 商品简单描述，该字段须严格按照规范传递 浏览器打开的移动网页的主页title名-商品概述,如:腾讯充值中心-QQ会员充值
         params.put("out_trade_no",
-            pubService.getSerialNo(SDPTypeEnum.MEMBER.getSpType(), 20, PubConstant.Bool.YES.getCode())); // 商户系统内部的订单号,32个字符内、可包含字母,
+            pubService.getSerialNo(SDPTypeEnum.MEM_ORDER.getSpType(), Integer.valueOf(PubConstant.SysPropertis.lengthOfSerialNo.getValue()), PubConstant.Bool.YES.getCode())); // 商户系统内部的订单号,32个字符内、可包含字母,
                                                                                                          // 其他说明
         params.put("total_fee", fee); // 订单总金额，单位为分 //TODO:单位待确认
         
@@ -80,6 +79,22 @@ public class PayServiceImplWeiXin implements IPayService {
         params.put("product_id", productId); // trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义
         params.put("limit_pay", "");// 指定不能使用的卡支付; no_credit:信用i
         params.put("openid", "");// 用户在商户appid下的唯一标识,trade_type=JSAPI，此参数必传
+
+        String signText = SignUtil.getMD5StrByDefault(params,payWeiXinConfig.getApiKey(),true,true);
+        params.put("sign",signText);
         return params;
+    }
+
+    @Override
+    public ResultVO returnPage(Map<String, Object> params) {
+        log.info("returnPage params:{}",params);
+        return null;
+    }
+
+    @Override
+    public ResultVO notify(Map<String, Object> params) {
+        log.info("notify params:{}",params);
+        return null;
+
     }
 }

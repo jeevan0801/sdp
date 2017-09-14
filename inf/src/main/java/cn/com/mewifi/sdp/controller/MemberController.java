@@ -45,10 +45,7 @@ public class MemberController {
     // @Qualifier("memberServiceImplTengRuiMing")
     @Qualifier("memberServiceImplXinYeZhiYou")
     private IMemberService memberService;
-    
-    @Autowired
-    @Qualifier("payServiceImplWeiXin")
-    private IPayService payService;
+
     
     @Autowired
     // private SPConfigProperties spConfigProperties;
@@ -96,23 +93,7 @@ public class MemberController {
         ResultVO rs = ResultVOUtil.success(rsJson);
         return rs;
     }
-    
-    /**
-     * 支付接口
-     * @param orderId
-     * @param fee
-     * @return
-     */
-    @ApiOperation(value = "支付接口")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "orderId", value = "支付流水号", required = true, dataType = "String", paramType = "query"),
-        @ApiImplicitParam(name = "fee", value = "支付金额", required = true, dataType = "String", paramType = "query")})
-    @PostMapping(value = "/pay")
-    public ResultVO getPayUrl(@RequestParam("orderId") String orderId, @RequestParam("fee") String fee) {
-        String url = payService.getPayUrl(orderId, fee);
-        ResultVO rs = ResultVOUtil.success(url);
-        return rs;
-    }
+
     
     /**
      * 短信验证码
@@ -142,5 +123,4 @@ public class MemberController {
     public ResultVO smsAuthCodeCheck(@RequestParam("mobileNo") String mobileNo, @RequestParam("authCode") String authCode) {
         return authCodeService.verifyAuthCode(mobileNo,authCode,clientId);
     }
-    
 }

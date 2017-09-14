@@ -10,6 +10,19 @@ import lombok.Getter;
  * date: 2017/9/12 10:37
  */
 public class PubConstant {
+
+    public enum SysPropertis{
+        lengthOfSerialNo("30","流水号默认长度");
+
+        SysPropertis(String value,String desc) {
+            this.value = value;
+            this.desc = desc;
+        }
+        @Getter
+        private String value;
+        @Getter
+        private String desc;
+    }
     
     /**
     * 标识布尔值

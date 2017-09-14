@@ -50,8 +50,8 @@ public class MemberServiceImplTengRuiMing implements IMemberService {
         params.put("action", action);
         params.put("m", mid);
         params.put("date", date);
-        params.put("s", MD5Util.sign(action + mid + date + key));
-        
+        params.put("s", MD5Util.sign(action + mid + date + key,false));
+
         JSONObject rs = HttpUtil.getForJSON(url, params);
     }
     
@@ -69,7 +69,7 @@ public class MemberServiceImplTengRuiMing implements IMemberService {
         params.put("m", mid);
         params.put("action", action);
         params.put("orderid", orderid);
-        params.put("s", MD5Util.sign(action + mid + orderid + key));
+        params.put("s", MD5Util.sign(action + mid + orderid + key,false));
         
         JSONObject rs = HttpUtil.getForJSON(url, params);
     }

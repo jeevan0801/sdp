@@ -17,10 +17,10 @@ import lombok.Data;
 @PropertySource("classpath:config/sms.properties")
 @Data
 public class SMSConfig {
-    
+
     @Value("${maxCountPerDay}")
     private String maxCountPerDay;
-    
+
     @Value("${maxInterval}")
     private String maxInterval;
 

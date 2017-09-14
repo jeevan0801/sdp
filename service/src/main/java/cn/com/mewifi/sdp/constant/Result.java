@@ -16,6 +16,9 @@ public enum Result {
     pub_action_doing("9","doing"),
     pub_action_finish("1","finish"),
 
+    //支付
+    pub_pay_signVerifyFail("-2000","签名验证失败"),
+
     // 报错提示信息 模块名_动作_提示
     pub_sms_sendFail("-1003","短信发送失败"),
     pub_authCode_outOfLimit("-1001","短信验证码获取过于频繁,请稍后再试"),

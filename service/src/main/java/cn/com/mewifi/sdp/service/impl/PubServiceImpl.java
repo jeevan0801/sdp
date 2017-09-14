@@ -3,6 +3,9 @@ package cn.com.mewifi.sdp.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.mewifi.core.util.HttpUtil;
+import cn.com.mewifi.core.util.MD5Util;
+import cn.com.mewifi.core.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +39,5 @@ public class PubServiceImpl implements IPubService {
         
         return serialNo;
     }
+
 }

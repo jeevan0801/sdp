@@ -67,7 +67,7 @@ public class MemberService_TengRuiMingTest {
         params.put("qq", qq);
         params.put("ip", ip);
         params.put("type", type);
-        params.put("s", MD5Util.sign(action + mid + orderid + num + qq + ip + type + key));
+        params.put("s", MD5Util.sign(action + mid + orderid + num + qq + ip + type + key,false));
         
         service.order(url, params);
     }

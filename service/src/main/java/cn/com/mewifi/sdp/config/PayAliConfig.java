@@ -23,7 +23,6 @@ public class PayAliConfig {
     private String partner;
     private String inputCharset;
     private String notifyUrl;
-    private String subject;
     private String paymentType;
     private String sellerId;
     private String privateKey;

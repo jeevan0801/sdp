@@ -1,6 +1,9 @@
 package cn.com.mewifi.sdp.service;
 
+import cn.com.mewifi.sdp.vo.ResultVO;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * description:
@@ -16,4 +19,17 @@ public interface IPayService {
      * @return
      */
     String getPayUrl(String productId, String fee);
+
+    /**
+     * 支付完成后跳转到页面, 并携带参数
+     * @param params
+     */
+    ResultVO returnPage(Map<String,Object> params);
+
+    /**
+     * 支付完成后, 后台通知
+     * @param params
+     */
+    ResultVO notify(Map<String,Object> params);
+
 }

@@ -1,5 +1,7 @@
 package cn.com.mewifi.sdp.service;
 
+import java.util.Map;
+
 /**
  * description:
  * author: wangjc
@@ -15,4 +17,6 @@ public interface IPubService {
      * @return
      */
     String getSerialNo(String modelName, int length, String preFlag);
+
+
 }

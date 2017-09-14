@@ -18,37 +18,40 @@ import org.springframework.context.annotation.PropertySource;
 @Data
 public class PayWeiXinConfig {
 
-    @Value("${appId}")
+//    @Value("${pay.weixin.appId}")
     private String appId;
 
-    @Value("${mchId}")
+//    @Value("${pay.weixin.mchId}")
     private String mchId;
 
-    @Value("${deviceInfo}")
+//    @Value("${pay.weixin.deviceInfo}")
     private String deviceInfo;
 
-    @Value("${singType}")
+//    @Value("${pay.weixin.singType}")
     private String singType;
 
-    @Value("${tradeType}")
+//    @Value("${pay.weixin.tradeType}")
     private String tradeType;
 
-    @Value("${body}")
+//    @Value("${pay.weixin.body}")
     private String body;
 
-    @Value("${notifyUrl}")
+//    @Value("${notifyUrl}")
     private String notifyUrl;
 
-    @Value("${h5InfoType}")
+//    @Value("${h5InfoType}")
     private String h5InfoType;
 
-    @Value("${h5InfoWapUrl}")
+//    @Value("${h5InfoWapUrl}")
     private String h5InfoWapUrl;
 
-    @Value("${h5InfoWapName}")
+//    @Value("${h5InfoWapName}")
     private String h5InfoWapName;
 
-    @Value("${minOfExpired}")
+//    @Value("${minOfExpired}")
     private String minOfExpired;
+
+//    @Value("${apiKey}")
+    private String apiKey;
 
 }
