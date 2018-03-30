@@ -23,5 +23,5 @@ public interface IAuthCodeService {
      * @param authCode 待验证的验证码
      * @return
      */
-    ResultVO verifyAuthCode(String receiver, String authCode, String clientId);
+    ResultVO    verifyAuthCode(String receiver, String authCode, String clientId);
 }

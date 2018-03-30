@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.OrderDetailInfoDao">
+
+
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.OrderDetail">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ORDERNUMBER" jdbcType="VARCHAR" property="ordernumber" />
+    <result column="DETAILNO" jdbcType="VARCHAR" property="detailno" />
+    <result column="BASEPRODUCTCODE" jdbcType="VARCHAR" property="baseproductcode" />
+    <result column="ORDERDETAILNAME" jdbcType="VARCHAR" property="orderdetailname" />
+    <result column="PRICE" jdbcType="DECIMAL" property="price" />
+    <result column="COST" jdbcType="DECIMAL" property="cost" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="RESULTDESC" jdbcType="VARCHAR" property="resultdesc" />
+    <result column="CREATETIME" jdbcType="DATE" property="createtime" />
+    <result column="UPDATEDATE" jdbcType="DATE" property="updatedate" />
+    <result column="CLIENTID" jdbcType="DECIMAL" property="clientid" />
+    <result column="CLIENTNAME" jdbcType="VARCHAR" property="clientname" />
+    <result column="SPID" jdbcType="DECIMAL" property="spid" />
+    <result column="SPNAME" jdbcType="VARCHAR" property="spname" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <discriminator javaType="java.lang.String" column="TYPE">
+      <case value="mem" resultType="cn.com.mewifi.sdp.bo.memberbenefit.MemOrderDetail"></case>
+    </discriminator>
+  </resultMap>
+  <sql id="Base_Column_List">
+    b.ID, b.OrderNumber, b.DETAILNO, b.BASEPRODUCTCODE, b.ORDERDETAILNAME, b.PRICE, b.COST, b.STATUS, b.RESULTDESC,
+    b.CREATETIME, b.UPDATEDATE, b.CLIENTID, b.CLIENTNAME, b.SPID, b.SPNAME, b.ACCOUNT, b.CODE,b.TYPE
+  </sql>
+
+  <sql id="Base_query_condition">
+    <trim prefix="where" prefixOverrides="AND |OR">
+      <if test="id != null">
+        and b.ID = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="ordernumber != null">
+        and b.OrderNumber = #{ordernumber,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and b.STATUS = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="resultdesc != null">
+        and b.RESULTDESC = #{resultdesc,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and b.TYPE = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="startdate != null">
+        and b.CREATETIME &gt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="enddate != null">
+        and b.CREATETIME &lt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+        and b.CREATETIME = #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="detailno!=null">
+        and b.DETAILNO =  #{detailno,jdbcType=VARCHAR},
+      </if>
+      <if test="baseproductcode!=null">
+        and b.BASEPRODUCTCODE = #{baseproductcode,jdbcType=VARCHAR}
+      </if>
+      <if test="orderdetailname != null">
+        and b.ORDERDETAILNAME = #{orderdetailname,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null">
+       and b.PRICE = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null">
+        and b.COST= #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        and b.STATUS= #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        and b.RESULTDESC= #{resultdesc,jdbcType=VARCHAR},
+      </if>
+
+      <if test="clientid != null">
+        and b.CLIENTID = #{clientid,jdbcType=DECIMAL},
+      </if>
+      <if test="clientname != null">
+        and b.CLIENTNAME = #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="spid != null">
+        and b.SPID = #{spid,jdbcType=DECIMAL},
+      </if>
+      <if test="spname != null">
+        and b.SPNAME = #{spname,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        and b.ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        and b.CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        and b.TYPE =  #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectOrderDetailByOrderDetailCode" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from T_SDP_ORDERDETAIL b
+    <if test="type==null or type == '' or type=='mem'">where b.CODE = #{code,jdbcType=VARCHAR}</if>
+  </select>
+  <select id="selectAllOrderDetails" resultMap="BaseResultMap" parameterType="string">
+    select
+    <include refid="Base_Column_List"/>
+    from T_SDP_ORDERDETAIL b
+    <if test="_parameter==null or _parameter == '' or _parameter=='mem'"></if> ORDER BY b.CREATETIME
+  </select>
+  <select id="selectOrdersByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List"/>
+    from T_SDP_ORDERDETAIL b
+    <if test="type == null or type == ''  or type=='mem'">
+      <include refid="Base_query_condition"/>
+    </if>
+    <if test="sortid!=null">
+      order by ${sortid}
+    </if>
+  </select>
+
+  <delete id="deleteOrderDetailByOrderDetailCode" parameterType="string">
+    delete from T_SDP_ORDERDETAIL
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertOrderDetail" parameterType="cn.com.mewifi.sdp.bo.OrderDetail">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+    SELECT SEQ_SDP_ORDERDETAIL.nextval FROM DUAL
+  </selectKey>
+
+    insert into T_SDP_ORDERDETAIL (ID, OrderNumber, DETAILNO,
+      BASEPRODUCTCODE, ORDERDETAILNAME, PRICE,
+      COST, STATUS, RESULTDESC,
+      CREATETIME, UPDATEDATE, CLIENTID,
+      CLIENTNAME, SPID, SPNAME, 
+      ACCOUNT, CODE,TYPE )
+    values (#{id,jdbcType=DECIMAL}, #{ordernumber,jdbcType=VARCHAR}, #{detailno,jdbcType=VARCHAR},
+      #{baseproductcode,jdbcType=VARCHAR}, #{orderdetailname,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+      #{cost,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{resultdesc,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=DATE}, #{updatedate,jdbcType=DATE}, #{clientid,jdbcType=DECIMAL},
+      #{clientname,jdbcType=VARCHAR}, #{spid,jdbcType=DECIMAL}, #{spname,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertOrderDetailSelective" parameterType="cn.com.mewifi.sdp.bo.OrderDetail">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_ORDERDETAIL.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_ORDERDETAIL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="ordernumber != null">
+        OrderNumber,
+      </if>
+      <if test="detailno != null">
+        DETAILNO,
+      </if>
+      <if test="baseproductcode != null">
+        BASEPRODUCTCODE,
+      </if>
+      <if test="orderdetailname != null">
+        ORDERDETAILNAME,
+      </if>
+      <if test="price != null">
+        PRICE,
+      </if>
+      <if test="cost != null">
+        COST,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="updatedate != null">
+        UPDATEDATE,
+      </if>
+      <if test="clientid != null">
+        CLIENTID,
+      </if>
+      <if test="clientname != null">
+        CLIENTNAME,
+      </if>
+      <if test="spid != null">
+        SPID,
+      </if>
+      <if test="spname != null">
+        SPNAME,
+      </if>
+      <if test="account != null">
+        ACCOUNT,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=DECIMAL},
+      <if test="ordernumber != null">
+        #{ordernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="detailno != null">
+        #{detailno,jdbcType=VARCHAR},
+      </if>
+      <if test="baseproductcode != null">
+        #{baseproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderdetailname != null">
+        #{orderdetailname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        #{resultdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updatedate != null">
+        #{updatedate,jdbcType=DATE},
+      </if>
+      <if test="clientid != null">
+        #{clientid,jdbcType=DECIMAL},
+      </if>
+      <if test="clientname != null">
+        #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="spid != null">
+        #{spid,jdbcType=DECIMAL},
+      </if>
+      <if test="spname != null">
+        #{spname,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateOrderDetailByPrimaryOrderDetailCodeSelective" parameterType="cn.com.mewifi.sdp.bo.OrderDetail">
+    update T_SDP_ORDERDETAIL
+    <set>
+      <if test="ordernumber != null">
+        ORDERNUMBER = #{ordernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="detailno != null">
+        DETAILNO = #{detailno,jdbcType=VARCHAR},
+      </if>
+      <if test="baseproductcode != null">
+        BASEPRODUCTCODE = #{baseproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderdetailname != null">
+        ORDERDETAILNAME = #{orderdetailname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        PRICE = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null">
+        COST = #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC = #{resultdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CREATETIME = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updatedate != null">
+        UPDATEDATE = #{updatedate,jdbcType=DATE},
+      </if>
+      <if test="clientid != null">
+        CLIENTID = #{clientid,jdbcType=DECIMAL},
+      </if>
+      <if test="clientname != null">
+        CLIENTNAME = #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="spid != null">
+        SPID = #{spid,jdbcType=DECIMAL},
+      </if>
+      <if test="spname != null">
+        SPNAME = #{spname,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CODE = #{code,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateOrderDetailByOrderDetailCode" parameterType="cn.com.mewifi.sdp.bo.OrderDetail">
+    update T_SDP_ORDERDETAIL
+    set ORDERNUMBER = #{ordernumber,jdbcType=VARCHAR},
+      DETAILNO = #{detailno,jdbcType=VARCHAR},
+      BASEPRODUCTCODE = #{baseproductcode,jdbcType=VARCHAR},
+      ORDERDETAILNAME = #{orderdetailname,jdbcType=VARCHAR},
+      PRICE = #{price,jdbcType=DECIMAL},
+      COST = #{cost,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=VARCHAR},
+      RESULTDESC = #{resultdesc,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=DATE},
+      UPDATEDATE = #{updatedate,jdbcType=DATE},
+      CLIENTID = #{clientid,jdbcType=DECIMAL},
+      CLIENTNAME = #{clientname,jdbcType=VARCHAR},
+      SPID = #{spid,jdbcType=DECIMAL},
+      SPNAME = #{spname,jdbcType=VARCHAR},
+      ACCOUNT = #{account,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR}
+    where  CODE = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

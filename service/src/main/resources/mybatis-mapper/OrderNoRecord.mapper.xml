@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.OrderNoRecordDao">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.OrderNoRecord">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="CLIENTNO" jdbcType="VARCHAR" property="clientno" />
+    <result column="ORDERNUMBER" jdbcType="VARCHAR" property="ordernumber" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="BASEPRODUCTCODE" jdbcType="VARCHAR" property="baseproductcode" />
+    <result column="CREATETIME" jdbcType="DATE" property="createtime" />
+    <result column="UPDATETIME" jdbcType="DATE" property="updatetime" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="STAUTS" jdbcType="VARCHAR" property="stauts" />
+    <result column="RESULTDESC" jdbcType="VARCHAR" property="resultdesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CLIENTNO, ORDERNUMBER, MOBILE, BASEPRODUCTCODE, CREATETIME, UPDATETIME, TYPE, 
+    STAUTS, RESULTDESC
+  </sql>
+
+ 
+  <insert id="insertOrderNo" parameterType="cn.com.mewifi.sdp.bo.OrderNoRecord">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_PUB_ORDERNORECORD.nextval FROM DUAL
+    </selectKey>
+    insert into T_PUB_ORDERNORECORD (ID, CLIENTNO, ORDERNUMBER, 
+      MOBILE, BASEPRODUCTCODE, CREATETIME, 
+      UPDATETIME, TYPE, STAUTS, 
+      RESULTDESC)
+    values (#{id,jdbcType=DECIMAL}, #{clientno,jdbcType=VARCHAR}, #{ordernumber,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{baseproductcode,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}, 
+      #{updatetime,jdbcType=DATE}, #{type,jdbcType=VARCHAR}, #{stauts,jdbcType=VARCHAR},
+      #{resultdesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertOrderNoSelective" parameterType="cn.com.mewifi.sdp.bo.OrderNoRecord">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_PUB_ORDERNORECORD.nextval FROM DUAL
+    </selectKey>
+    insert into T_PUB_ORDERNORECORD
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="clientno != null">
+        CLIENTNO,
+      </if>
+      <if test="ordernumber != null">
+        ORDERNUMBER,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="baseproductcode != null">
+        BASEPRODUCTCODE,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="updatetime != null">
+        UPDATETIME,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="stauts != null">
+        STAUTS,
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="clientno != null">
+        #{clientno,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernumber != null">
+        #{ordernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="baseproductcode != null">
+        #{baseproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="stauts != null">
+        #{stauts,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        #{resultdesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectOrderRecordByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select <include refid="Base_Column_List"/> from T_PUB_ORDERNORECORD
+    <trim prefix="where" prefixOverrides="AND |OR">
+      <if test="id != null">
+        and ID = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="clientno != null">
+        and CLIENTNO=  #{clientno,jdbcType=VARCHAR}
+      </if>
+      <if test="ordernumber != null">
+        and ORDERNUMBER =  #{ordernumber,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile != null">
+        and MOBILE = #{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="baseproductcode != null">
+        and BASEPRODUCTCODE = #{baseproductcode,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and STATUS = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and TYPE = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="startdate != null">
+        and CREATETIME &gt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="enddate != null">
+        and CREATETIME &lt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+        and CREATETIME = #{createtime,jdbcType=VARCHAR}
+      </if>
+    </trim>
+    
+  </select>
+</mapper>

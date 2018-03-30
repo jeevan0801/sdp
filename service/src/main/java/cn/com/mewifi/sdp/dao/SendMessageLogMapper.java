@@ -11,5 +11,5 @@ public interface SendMessageLogMapper {
      * @return
      */
     Integer insert(SendMessageLog record);
-
+    
 }

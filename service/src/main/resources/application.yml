@@ -1,5 +1,15 @@
 server:
   port: 8081
 
-
+spring:
+  jpa:
+    show-sql: true
+logging:
+  level:
+    org:
+     springframework: WARN
+    spring:
+      springboot:
+        dao: DEBUG
+  file: logs/spring-boot-logging.log
 ### druid

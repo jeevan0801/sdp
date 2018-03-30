@@ -1,6 +1,7 @@
 package cn.com.mewifi.sdp.util;
 
 import cn.com.mewifi.sdp.constant.Result;
+import cn.com.mewifi.sdp.vo.ResultPageVO;
 import cn.com.mewifi.sdp.vo.ResultVO;
 
 /**
@@ -21,12 +22,18 @@ public class ResultVOUtil {
         resultVO.setMsg(Result.pub_success.getMsg());
         return resultVO;
     }
-
+    
     public static ResultVO success(Result rs) {
         ResultVO resultVO = new ResultVO();
         resultVO.setData(null);
-        resultVO.setCode(rs.getCode());
-        resultVO.setMsg(rs.getMsg());
+        if (rs != null) {
+            resultVO.setCode(rs.getCode());
+            resultVO.setMsg(rs.getMsg());
+        }
+        else {
+            resultVO.setCode(Result.pub_success.getCode());
+            resultVO.setMsg(Result.pub_success.getMsg());
+        }
         return resultVO;
     }
     
@@ -36,6 +43,16 @@ public class ResultVOUtil {
      */
     public static ResultVO success() {
         return success(null);
+    }
+
+    public static ResultPageVO success(Object object,Integer totalPage,Integer totalCount) {
+        ResultPageVO pageVO = new ResultPageVO();
+        pageVO.setData(object);
+        pageVO.setCode(Result.pub_success.getCode());
+        pageVO.setMsg(Result.pub_success.getMsg());
+       pageVO.setTotalCount(totalCount);
+        pageVO.setTotalPage(totalPage);
+        return pageVO;
     }
     
     /**
@@ -50,7 +67,7 @@ public class ResultVOUtil {
         resultVO.setMsg(msg);
         return resultVO;
     }
-
+    
     /** 失败
      * @param rs enum
      * @return
@@ -61,13 +78,13 @@ public class ResultVOUtil {
         resultVO.setMsg(rs.getMsg());
         return resultVO;
     }
-
+    
     /** 失败
      * @param rs enum
      * @param data
      * @return
      */
-    public static ResultVO error(Result rs,Object data) {
+    public static ResultVO error(Result rs, Object data) {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(rs.getCode());
         resultVO.setMsg(rs.getMsg());

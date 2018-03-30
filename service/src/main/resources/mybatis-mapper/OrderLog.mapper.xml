@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.OrderLogDao">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.OrderLog">
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="CREATETIME" jdbcType="DATE" property="createtime" />
+    <result column="ORDERID" jdbcType="DECIMAL" property="orderid" />
+    <result column="ORDERDETAILID" jdbcType="DECIMAL" property="orderdetailid" />
+    <result column="CLIENTNAME" jdbcType="VARCHAR" property="clientname" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="SPNAME" jdbcType="VARCHAR" property="spname" />
+    <result column="BASEPRODUCTCODE" jdbcType="VARCHAR" property="baseproductcode" />
+    <result column="PRICE" jdbcType="DECIMAL" property="price" />
+    <result column="PAYDESC" jdbcType="VARCHAR" property="paydesc" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CREATETIME, ORDERID,
+      ORDERDETAILID, CLIENTNAME, ACCOUNT,
+      SPNAME, BASEPRODUCTCODE, PRICE,
+      PAYDESC, TYPE
+  </sql>
+  <insert id="insertOrderLog" parameterType="cn.com.mewifi.sdp.bo.OrderLog">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_ORDERLOG.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_ORDERLOG (ID, CREATETIME, ORDERID, 
+      ORDERDETAILID, CLIENTNAME, ACCOUNT, 
+      SPNAME, BASEPRODUCTCODE, PRICE, 
+      PAYDESC, TYPE)
+    values (#{id,jdbcType=DECIMAL}, #{createtime,jdbcType=DATE}, #{orderid,jdbcType=DECIMAL}, 
+      #{orderdetailid,jdbcType=DECIMAL}, #{clientname,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{spname,jdbcType=VARCHAR}, #{baseproductcode,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{paydesc,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertOrderLogSelective" parameterType="cn.com.mewifi.sdp.bo.OrderLog">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_ORDERLOG.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_ORDERLOG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="orderid != null">
+        ORDERID,
+      </if>
+      <if test="orderdetailid != null">
+        ORDERDETAILID,
+      </if>
+      <if test="clientname != null">
+        CLIENTNAME,
+      </if>
+      <if test="account != null">
+        ACCOUNT,
+      </if>
+      <if test="spname != null">
+        SPNAME,
+      </if>
+      <if test="baseproductcode != null">
+        BASEPRODUCTCODE,
+      </if>
+      <if test="price != null">
+        PRICE,
+      </if>
+      <if test="paydesc != null">
+        PAYDESC,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="orderid != null">
+        #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="orderdetailid != null">
+        #{orderdetailid,jdbcType=DECIMAL},
+      </if>
+      <if test="clientname != null">
+        #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="spname != null">
+        #{spname,jdbcType=VARCHAR},
+      </if>
+      <if test="baseproductcode != null">
+        #{baseproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="paydesc != null">
+        #{paydesc,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectOrderLogByOrderId" parameterType="DECIMAL" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List"/> from T_SDP_ORDERLOG where ORDERID=#{orderid,jdbcType=DECIMAL}
+  </select>
+
+
+
+</mapper>

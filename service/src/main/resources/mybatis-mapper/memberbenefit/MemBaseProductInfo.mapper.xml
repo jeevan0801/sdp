@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.memberbenefit.MemBaseProductInfoDao">
+
+    <insert id="insertMemBaseProduct" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemBaseProduct">
+        <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+            SELECT SEQ_SDP_MEM.nextval FROM DUAL
+        </selectKey>
+        insert into
+          T_SDP_MEM_BASEPRODUCT(ID, PICURL, UNITPRICE, SORTID, ISINDEX)
+        values(
+          #{memId,jdbcType=DECIMAL},  #{picUrl,jdbcType=VARCHAR},
+        #{unitPrice,jdbcType=DECIMAL},  #{sortId,jdbcType=VARCHAR},
+        #{isIndex,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="batchInsertMemBaseProducts" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemBaseProduct">
+        insert into T_SDP_MEM_BASEPRODUCT (ID, PICURL, UNITPRICE, SORTID, ISINDEX)
+        <foreach collection="list" item="p" separator=",">
+            #{p.memId,jdbcType=DECIMAL}, #{p.picUrl,jdbcType=VARCHAR},
+            #{p.unitPrice,jdbcType=DECIMAL}, #{p.sortId,jdbcType=VARCHAR},
+           #{p.isIndex,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <insert id="insertMemBaseProductSelective" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemBaseProduct">
+        insert into T_SDP_MEM_BASEPRODUCT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="picUrl != null">
+                PICURL,
+            </if>
+            <if test="unitPrice != null">
+                UNITPRICE,
+            </if>
+            <if test="sortId != null">
+                SORTID,
+            </if>
+            <if test="isIndex != null">
+                ISINDEX
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{memId,jdbcType=DECIMAL},
+
+            <if test="picUrl != null">
+                #{picUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="sortId != null">
+                #{sortId,jdbcType=VARCHAR},
+            </if>
+            <if test="isIndex != null">
+                #{isIndex,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateMemBaseProductById" parameterType="string">
+        UPDATE T_SDP_MEM_BASEPRODUCT set  PICURL=#{ picUrl,jdbcType=VARCHAR},UNITPRICE=#{unitPrice,jdbcType=DECIMAL},
+        SORTID=#{sortId,jdbcType=VARCHAR},ISINDEX=#{isIndex,jdbcType=VARCHAR} WHERE
+        ID=#{memId,jdbcType=DECIMAL}
+    </update>
+
+    <update id="updateMemBaseProductBySelective" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemBaseProduct">
+        UPDATE T_SDP_MEM_MemBaseProduct set
+        <if test="picUrl !=null">PICURL=#{picUrl,jdbcType=VARCHAR},</if>
+        <if test="unitPrice !=null">UNITPRICE= #{unitPrice,jdbcType=DECIMAL},</if>
+        <if test="sortId !=null">SORTID=#{sortId,jdbcType=VARCHAR},</if>
+        <if test="isIndex !=null">ISINDEX=#{isIndex,jdbcType=DECIMAL},</if>
+        WHERE ID=#{memId,jdbcType=DECIMAL}
+    </update>
+
+    <delete id="deleteMemBaseProductByProductId" parameterType="decimal">
+        delete from T_SDP_MEM_BASEPRODUCT
+        where ID = #{memId,jdbcType=DECIMAL}
+    </delete>
+
+    <delete id="batchDeleteMemBaseProductsByProductIds" parameterType="decimal">
+        delete from T_SDP_MEM_BASEPRODUCT
+        where ID in
+        <foreach collection="list" item="memId" separator="," open="(" close=")">
+            #{memId,jdbcType=DECIMAL}
+        </foreach>
+    </delete>
+
+</mapper>

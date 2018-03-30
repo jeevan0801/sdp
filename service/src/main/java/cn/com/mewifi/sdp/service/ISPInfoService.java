@@ -1,8 +1,9 @@
 package cn.com.mewifi.sdp.service;
 
-import java.util.List;
+import cn.com.mewifi.sdp.bo.SpInformation;
 
-import cn.com.mewifi.sdp.bo.db.SPInfo;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * sdp上游信息
@@ -16,11 +17,36 @@ public interface ISPInfoService {
      * @param spId
      * @return
      */
-    SPInfo selectById(String spId);
+    <T extends SpInformation> T selectSpInfoById(BigDecimal spId);
+    /**
+     * 根据spid和type查询spinfo
+     * @param spId
+     * @param type
+     * @return
+     */
+    <T extends SpInformation> T selectSpInfoByIdAndType(BigDecimal spId,String type);
+    /**
+     * 根据spCode查询spinfo
+     * @param spCode
+     * @return
+     */
+    <T extends SpInformation> T selectSpInfoBySpCode(String spCode);
+    /**
+     * 根据spCode和type查询spinfo
+     * @param spCode
+     * @param type
+     * @return
+     */
+    <T extends SpInformation> T selectSpInfoBySpCodeAndType(String spCode,String type);
 
     /**
      * 查询所有spinfo
      * @return
      */
-    List<SPInfo> selectAll();
+    List<? extends SpInformation> selectAllSpInfos();
+    /**
+     * 查询所有spinfo
+     * @return
+     */
+    List<? extends SpInformation> selectAllSpInfosByType(String type);
 }

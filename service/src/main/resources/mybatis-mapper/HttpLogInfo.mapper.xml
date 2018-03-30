@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.HttpLogInfoDao">
+    <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.HttpLog">
+        <id column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="ACCOUNTCODE" jdbcType="VARCHAR" property="accountcode"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
+        <result column="CLIENTIP" jdbcType="VARCHAR" property="clientip"/>
+        <result column="URL" jdbcType="VARCHAR" property="url"/>
+        <result column="METHOD" jdbcType="VARCHAR" property="method"/>
+        <result column="REQUESTPARAMS" jdbcType="VARCHAR" property="requestparams"/>
+        <result column="CRETATTIME" jdbcType="DATE" property="cretattime"/>
+        <result column="COSTTIME" jdbcType="DECIMAL" property="costtime"/>
+        <result column="HTTPCODE" jdbcType="VARCHAR" property="httpcode"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.mewifi.sdp.bo.HttpLog">
+        <result column="RESULT" jdbcType="CLOB" property="result"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, ACCOUNTCODE, TYPE, CLIENTIP, URL, METHOD, REQUESTPARAMS, CRETATTIME, COSTTIME,
+    HTTPCODE
+  </sql>
+    <sql id="Blob_Column_List">
+    RESULT
+  </sql>
+    <sql id="Base_sql_conditon">
+        <trim prefix="where" prefixOverrides="AND |OR">
+            <if test="id != null">
+               AND ID= #{id,jdbcType=DECIMAL},
+            </if>
+            <if test="accountcode != null">
+                AND ACCOUNTCODE= #{accountcode,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+               AND TYPE=  #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="clientip != null">
+                AND CLIENTIP=#{clientip,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+               AND URL= #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+              AND METHOD=  #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="requestparams != null">
+              AND REQUESTPARAMS=  #{requestparams,jdbcType=VARCHAR},
+            </if>
+            <if test="cretattime != null">
+              AND CREATETIME = #{cretattime,jdbcType=DATE},
+            </if>
+            <if test="mincosttime != null">
+                AND COSTTIME &gt;= #{mincosttime,jdbcType=DECIMAL},
+            </if>
+            <if test="maxcosttime != null">
+               AND COSTTIME &lt;= #{maxcosttime,jdbcType=DECIMAL},
+            </if>
+
+            <if test="httpcode != null">
+               AND HTTPCODE= #{httpcode,jdbcType=VARCHAR},
+            </if>
+
+            <if test="starttime!=null">
+                AND CRETATTIME &gt;=#{starttime,jdbcType=DATE}
+            </if>
+            <if test="endtime!=null">
+                AND CRETATTIME &lt;=#{endtime,jdbcType=DATE}
+            </if>
+        </trim>
+    </sql>
+
+    <insert id="insertHttpLog" parameterType="cn.com.mewifi.sdp.bo.HttpLog">
+        <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+            SELECT SEQ_PUB_HTTPLOG.nextval FROM DUAL
+        </selectKey>
+        insert into T_PUB_HTTPTLOG (ID, ACCOUNTCODE, TYPE,
+        CLIENTIP, URL, METHOD,
+        REQUESTPARAMS, CRETATTIME, COSTTIME,
+        HTTPCODE,RESULT)
+        values (#{id,jdbcType=DECIMAL}, #{accountcode,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+        #{clientip,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
+        #{requestparams,jdbcType=VARCHAR}, #{cretattime,javaType=java.util.Date}, #{costtime,jdbcType=DECIMAL},
+        #{httpcode,jdbcType=VARCHAR}, #{result,jdbcType=CLOB})
+    </insert>
+    <insert id="insertHttpLogSelective" parameterType="cn.com.mewifi.sdp.bo.HttpLog">
+        <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+            SELECT SEQ_PUB_HTTPLOG.nextval FROM DUAL
+        </selectKey>
+        insert into T_PUB_HTTPTLOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                ID,
+            <if test="accountcode != null">
+                ACCOUNTCODE,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="clientip != null">
+                CLIENTIP,
+            </if>
+            <if test="url != null">
+                URL,
+            </if>
+            <if test="method != null">
+                METHOD,
+            </if>
+            <if test="requestparams != null">
+                REQUESTPARAMS,
+            </if>
+            <if test="cretattime != null">
+                CRETATTIME,
+            </if>
+            <if test="costtime != null">
+                COSTTIME,
+            </if>
+            <if test="httpcode != null">
+                HTTPCODE,
+            </if>
+            <if test="result != null">
+                RESULT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                #{id,jdbcType=DECIMAL},
+            <if test="accountcode != null">
+                #{accountcode,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="clientip != null">
+                #{clientip,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="requestparams != null">
+                #{requestparams,jdbcType=VARCHAR},
+            </if>
+            <if test="cretattime != null">
+                #{cretattime},
+            </if>
+            <if test="costtime != null">
+                #{costtime,jdbcType=DECIMAL},
+            </if>
+            <if test="httpcode != null">
+                #{httpcode,jdbcType=VARCHAR},
+            </if>
+            <if test="result != null">
+                #{result,jdbcType=CLOB},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectLogsByCondition" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
+        select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/> FROM T_PUB_HTTPTLOG
+        <include refid="Base_sql_conditon"/> order by CREATETIME DESC
+
+    </select>
+
+</mapper>

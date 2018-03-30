@@ -1,11 +1,10 @@
 package cn.com.mewifi.sdp.dao;
 
-import java.util.List;
-
+import cn.com.mewifi.sdp.bo.db.SPInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import cn.com.mewifi.sdp.bo.db.SPInfo;
+import java.util.List;
 
 /**
  * description:
@@ -14,14 +13,14 @@ import cn.com.mewifi.sdp.bo.db.SPInfo;
  */
 @Mapper
 public interface SPInfoDao {
-
+    
     /**
      * 按spId查询spinfo
      * @param spId
      * @return
      */
     SPInfo selectById(@Param("spId") String spId);
-
+    
     /**
      * 查询所有spinfo
      * @return

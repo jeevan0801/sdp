@@ -1,8 +1,7 @@
 package cn.com.mewifi.sdp.dao;
 
-import org.apache.ibatis.annotations.Param;
-
 import cn.com.mewifi.sdp.bo.db.AuthCodeLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 
@@ -15,7 +14,6 @@ public interface AuthCodeLogMapper {
      * @return
      */
     int insert(AuthCodeLog record);
-
     
     /**
      * 过去24小时累计发送的量
@@ -37,13 +35,12 @@ public interface AuthCodeLogMapper {
      * @return
      */
     AuthCodeLog getLastInfo(@Param("receiver") String receiver, @Param("clientId") String clientId);
-
-
+    
     /**
      * 根据主键修改状态
      * @param id
      * @return
      */
     int updateStatusById(BigDecimal id);
-
+    
 }

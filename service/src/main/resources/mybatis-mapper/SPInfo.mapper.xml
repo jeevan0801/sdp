@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cn.com.mewifi.sdp.dao.SPInfoDao">
-    
+
     <select id="selectById" resultType="SPInfo">
         select * from T_SDP_SPINFO t where t.SPID=#{spId}
     </select>
-    
+
     <select id="selectAll" resultType="SPInfo">
         select * from T_SDP_SPINFO t
     </select>

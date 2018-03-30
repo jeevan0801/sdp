@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.ClientInfoDao">
+    <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.ClientInformation">
+        <id column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="CLIENTNAME" jdbcType="VARCHAR" property="clientname"/>
+        <result column="KEY" jdbcType="VARCHAR" property="key"/>
+        <result column="ACCOUNTID" jdbcType="VARCHAR" property="accountid"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
+        <result column="CODE" jdbcType="VARCHAR" property="code"/>
+        <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+        <result column="CREATETIME" jdbcType="DATE" property="createtime"/>
+        <result column="EXPIRETIME" jdbcType="DATE" property="expiretime"/>
+        <result column="SORTID" jdbcType="VARCHAR" property="sortid"/>
+        <result column="SERVERIPS" jdbcType="VARCHAR" property="serverips"/>
+        <discriminator javaType="java.lang.String" column="TYPE">
+            <case value="mem" resultType="cn.com.mewifi.sdp.bo.memberbenefit.MemClientInformation"></case>
+        </discriminator>
+    </resultMap>
+    <sql id="Base_query_condition">
+        <trim prefix="where" prefixOverrides="AND |OR">
+            <if test="id != null">
+                and b.ID= #{id,jdbcType=DECIMAL}
+            </if>
+
+            <if test="clientname != null">
+                and b.CLIENTNAME= #{clientname,jdbcType=VARCHAR}
+            </if>
+            <if test="key != null">
+                and b.KEY=#{key,jdbcType=VARCHAR}
+            </if>
+            <if test="accountid != null">
+                and b.ACCOUNT= #{accountid,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and b.TYPE= #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null">
+                and b.CODE= #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and b.STATUS= #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="createtime != null">
+                and b.CREATETIME= #{createtime,jdbcType=DATE}
+            </if>
+            <if test="startdate != null">
+                and b.CREATETIME &gt;= #{createtime,jdbcType=DATE}
+            </if>
+            <if test="enddate != null">
+                and b.CREATETIME &lt;= #{createtime,jdbcType=DATE}
+            </if>
+            <if test="serverips !=null">
+                and b.SERVERIPS = #{serverips,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        b.ID, b.CLIENTNAME, b.KEY, b.ACCOUNTID, b.TYPE, b.CODE, b.STATUS, b.CREATETIME,b.EXPIRETIME,b.SERVERIPS
+    </sql>
+
+
+    <select id="selectAllClients" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        from T_SDP_CLIENTINFO b
+        <if test="_parameter==null or _parameter=='' or _parameter=='mem' "></if>
+    </select>
+
+
+    <select id="selectAvailAbleClients" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        from T_SDP_CLIENTINFO b
+        <if test="_parameter==null or _parameter=='' or _parameter=='mem' ">where b.status =1</if>
+
+    </select>
+
+    <select id="selectClientByClientInfoCode" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_SDP_CLIENTINFO b
+        <if test="type==null or type==''  or type=='mem' ">where b.CODE = #{code,jdbcType=VARCHAR}</if>
+    </select>
+
+
+    <select id="selectClientsByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_SDP_CLIENTINFO b
+        <if test="type == null or type == '' or type=='mem' ">
+            <include refid="Base_query_condition"/>
+        </if>
+        <if test="sortid!=null">
+            order by ${sortid}
+        </if>
+
+    </select>
+
+
+</mapper>

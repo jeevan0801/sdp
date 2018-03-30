@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.memberbenefit.MemSpInfoDao">
+    <insert id="insertMemSpInfo" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemSpInformation">
+        insert into T_SDP_MEM_SPINFO (ID, SMALLLOGO, BIGLOGO)
+        values (#{id,jdbcType=DECIMAL},  #{smallLogo,jdbcType=VARCHAR},#{bigLogo,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="batchInsertMemSpInfos" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemSpInformation">
+        insert into T_SDP_MEM_SPINFO (ID, SMALLLOGO, BIGLOGO)
+        <foreach collection="list" item="p" separator=",">
+            #{p.id,jdbcType=DECIMAL}, #{p.smallLogo,jdbcType=VARCHAR},#{p.bigLogo,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <insert id="insertMemSpInfoSelective" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemSpInformation">
+        insert into T_SDP_MEM_SPINFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="smallLogo!= null">
+                SMALLLOGO,
+            </if>
+            <if test=" bigLOGO != null">
+                SMALLLOGO,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=DECIMAL},
+            <if test="smallLogo != null">
+                #{picUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="bigLogo != null">
+                #{bigLogo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateMemSpInfoById" parameterType="string">
+        UPDATE T_SDP_MEM_SPINFO set  SMALLLOGO=#{ smallLogo,jdbcType=VARCHAR},BIGLOGO=#{bigLogo,jdbcType=VARCHAR} WHERE
+        ID=#{id,jdbcType=DECIMAL}
+    </update>
+
+    <update id="updateMemSpInfoBySelective" parameterType="cn.com.mewifi.sdp.bo.memberbenefit.MemSpInformation">
+        UPDATE T_SDP_MEM_MemBaseProduct set
+        <if test="smallLogo !=null">SMALLLOGO=#{picUrl,jdbcType=VARCHAR},</if>
+        <if test="bigLogo !=null">BIGLOGO= #{bigLogo,jdbcType=VARCHAR},</if>
+        WHERE ID=#{id,jdbcType=DECIMAL}
+    </update>
+
+    <delete id="deleteMemSpInfoBySpInfoId" parameterType="decimal">
+        delete from T_SDP_MEM_SPINFO
+        where ID = #{id,jdbcType=DECIMAL}
+    </delete>
+
+    <delete id="batchDeleteMemSpInfosBySpInfoIds" parameterType="decimal">
+        delete from T_SDP_MEM_SPINFO
+        where ID in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id,jdbcType=DECIMAL}
+        </foreach>
+    </delete>
+</mapper>

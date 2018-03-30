@@ -9,8 +9,8 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.com.mewifi.core.util.HttpUtil;
 import cn.com.mewifi.core.util.JSONUtil;
-import cn.com.mewifi.core.util.third.MD5Util;
 import cn.com.mewifi.sdp.service.AbstractSmsService;
+import cn.com.mewifi.sdp.util.third.ThirdUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,7 +43,7 @@ public class SmsServiceImplWO extends AbstractSmsService {// implements ISmsServ
         params.put("Parameter", tempLateParam);
         params.put("Timestamp", System.currentTimeMillis() + "");
         
-        String sign = MD5Util.digestWO(params, passwd);
+        String sign = ThirdUtil.md5ForWO(params, passwd);
         
         params.put("Verify", sign);
         

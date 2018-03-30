@@ -1,7 +1,9 @@
 package cn.com.mewifi.sdp.config;
 
-import javax.sql.DataSource;
-
+import com.github.pagehelper.PageHelper;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -15,8 +17,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Mybaits配置类
@@ -38,7 +40,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
      * @return
      */
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactoryBean() {
+    public SqlSessionFactory sqlSessionFactoryBean(PageHelper pageHelper) {
         SqlSessionFactoryBean sqlsession = new SqlSessionFactoryBean();
         sqlsession.setDataSource(dataSource);
         sqlsession.setTypeAliasesPackage("cn.com.mewifi.sdp.bo.db");// 扫描entity包 使用别名
@@ -48,10 +50,14 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
         configuration.setMapUnderscoreToCamelCase(true);// -自动使用驼峰命名属性映射字段 userId user_id
         sqlsession.setConfiguration(configuration);
         sqlsession.setFailFast(true);
+
         // 添加XML目录
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Interceptor[] plugins =  new Interceptor[]{pageHelper};
+
+        sqlsession.setPlugins(plugins);
         try {
-            sqlsession.setMapperLocations(resolver.getResources("classpath:mybatis-mapper/*.xml"));
+            sqlsession.setMapperLocations(resolver.getResources("classpath:mybatis-mapper/**/*.xml"));
             return sqlsession.getObject();
         }
         catch (Exception e) {
@@ -77,6 +83,22 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
     @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new DataSourceTransactionManager(dataSource);
+    }
+
+    /****
+     * 分页插件
+     * @return
+     */
+    @Bean
+    public PageHelper pageHelper() {
+        PageHelper pageHelper = new PageHelper();
+        Properties p = new Properties();
+        p.setProperty("offsetAsPageNum", "true");
+        p.setProperty("rowBoundsWithCount", "true");
+        p.setProperty("reasonable", "true");
+        p.setProperty("dialect", "oracle");
+        pageHelper.setProperties(p);
+        return pageHelper;
     }
     
 }

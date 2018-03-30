@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.ISpInfoDao">
+    <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.SpInformation">
+        <id column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="BASEURL" jdbcType="VARCHAR" property="baseurl"/>
+        <result column="SPNAME" jdbcType="VARCHAR" property="spname"/>
+        <result column="KEY" jdbcType="VARCHAR" property="key"/>
+        <result column="ACCOUNTID" jdbcType="VARCHAR" property="accountid"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
+        <result column="CODE" jdbcType="VARCHAR" property="code"/>
+        <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+        <result column="CREATETIME" jdbcType="VARCHAR" property="createtime"/>
+        <result column="SORTID" jdbcType="VARCHAR" property="sortid"/>
+        <result column="SPDESC" jdbcType="VARCHAR" property="spdesc"/>
+        <discriminator javaType="java.lang.String" column="TYPE">
+            <case value="mem" resultType="cn.com.mewifi.sdp.bo.memberbenefit.MemSpInformation"></case>
+        </discriminator>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        b.ID, b.BASEURL, b.SPNAME, b.KEY, b.ACCOUNTID, b.TYPE, b.CODE, b.STATUS, b.CREATETIME,b.SPDESC
+    </sql>
+
+    <sql id="Base_Mem_Column_List">
+        , m.SMALLLOGO,m.BIGLOGO
+    </sql>
+
+
+    <sql id="Base_query_condition">
+        <trim prefix="where" prefixOverrides="AND |OR">
+            <if test="id != null">
+                and b.ID= #{id,jdbcType=DECIMAL}
+            </if>
+            <if test="baseurl != null">
+                and b.BASEURL= #{baseurl,jdbcType=VARCHAR}
+            </if>
+            <if test="spname != null">
+                and b.SPNAME= #{spname,jdbcType=VARCHAR}
+            </if>
+            <if test="key != null">
+                and b.KEY=#{key,jdbcType=VARCHAR}
+            </if>
+            <if test="accountid != null">
+                and b.ACCOUNT= #{accountid,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and b.TYPE= #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null">
+                and b.CODE= #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and b.STATUS= #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="createtime != null">
+                and b.CREATETIME= #{createtime,jdbcType=VARCHAR}
+            </if>
+            <if test="startdate != null">
+                and b.CREATETIME &gt;= #{createtime,jdbcType=VARCHAR}
+            </if>
+            <if test="enddate != null">
+                and b.CREATETIME &lt;= #{createtime,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+
+
+    <select id="selectAllSpInfos" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        <if test="_parameter!=null and _parameter=='mem'">
+            <include refid="Base_Mem_Column_List"/>
+        </if>
+        from T_SDP_SPINFO b
+        <if test="_parameter!=null and _parameter=='mem'">,T_SDP_MEM_SPINFO m where b.ID = m.ID</if>
+    </select>
+    <select id="selectAvailAbleSpInfos" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        <if test="_parameter!=null and _parameter=='mem'">
+            <include refid="Base_Mem_Column_List"/>
+        </if>
+        from T_SDP_SPINFO b
+        <if test="_parameter == null or _parameter == ''">where b.status =1</if>
+        <if test="_parameter!=null and _parameter=='mem'">,T_SDP_MEM_SPINFO m where b.ID = m.ID and b.status=1</if>
+    </select>
+
+    <select id="selectSpInfoBySpInfoCode" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        <if test="type!=null and type=='mem'">
+            <include refid="Base_Mem_Column_List"/>
+        </if>
+        from T_SDP_SPINFO b
+        <if test="type == null or type == '' ">where b.CODE = #{code,jdbcType=VARCHAR}</if>
+        <if test="type != null and type=='mem' ">,T_SDP_MEM_SPINFO m where b.CODE = #{code,jdbcType=VARCHAR} and b.ID =
+            m.ID
+        </if>
+    </select>
+
+    <select id="selectSpInfosByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        <if test="type!=null and type=='mem'">
+            <include refid="Base_Mem_Column_List"/>
+        </if>
+        from T_SDP_SPINFO b
+        <if test="type !=null and type=='mem'">,T_SDP_MEM_SPINFO m</if>
+        <if test="type == null or type == '' or type=='mem' ">
+            <include refid="Base_query_condition"/>
+        </if>
+        <if test="type !=null and type=='mem'">and b.ID = m.ID</if>
+        <if test="sortid!=null">
+            order by ${sortid}
+        </if>
+
+    </select>
+
+    <select id="selectSpInfoById" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        <if test="type!=null and type=='mem'">
+            <include refid="Base_Mem_Column_List"/>
+        </if>
+        from T_SDP_SPINFO b
+        <if test="type == null or type == '' ">where b.ID = #{spId,jdbcType=DECIMAL}</if>
+        <if test="type!=null and type=='mem'">,T_SDP_MEM_SPINFO m where b.ID = m.ID and b.ID =
+            #{spId,jdbcType=DECIMAL}
+        </if>
+    </select>
+
+
+
+
+    <insert id="insertSpInfo" parameterType="cn.com.mewifi.sdp.bo.SpInformation">
+        <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+            SELECT SEQ_SDP_SPINFO.nextval FROM DUAL
+        </selectKey>
+        insert into T_SDP_SPINFO (ID, BASEURL, SPNAME, KEY, ACCOUNTID, TYPE, CODE, STATUS, CREATETIME,SPDESC )
+        values (#{id,jdbcType=DECIMAL}, #{baseurl,jdbcType=VARCHAR}, #{spname,jdbcType=VARCHAR},
+        #{key,jdbcType=VARCHAR}, #{accountid,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},
+        #{spdesc,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="batchInsertSpInfos">
+        <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+            SELECT SEQ_SDP_SPINFO.nextval FROM DUAL
+        </selectKey>
+        insert into T_SDP_SPINFO (ID, BASEURL, SPNAME, KEY, ACCOUNTID, TYPE, CODE, STATUS, CREATETIME,SPDESC) VALUES(#{id,jdbcType=DECIMAL},
+        <foreach collection="list" item="s" separator=",">
+            #{s.baseurl,jdbcType=VARCHAR}, #{s.spname,jdbcType=VARCHAR},
+            #{s.key,jdbcType=VARCHAR}, #{s.accountid,jdbcType=VARCHAR},#{s.type,jdbcType=VARCHAR},
+            #{s.code,jdbcType=VARCHAR},#{s.status,jdbcType=VARCHAR},#{s.createtime,jdbcType=VARCHAR},
+            #{s.spdesc,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <insert id="insertSpInfoSelective" parameterType="cn.com.mewifi.sdp.bo.SpInformation">
+        <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+            SELECT SEQ_SDP_SPINFO.nextval FROM DUAL
+        </selectKey>
+        insert into T_SDP_SPINFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="baseurl != null">
+                BASEURL,
+            </if>
+            <if test="spname != null">
+                SPNAME,
+            </if>
+            <if test="key != null">
+                KEY,
+            </if>
+            <if test="accountid != null">
+                ACCOUNTID,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="code != null">
+                CODE，
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createTime != null">
+                CREATETIME,
+            </if>
+            <if test="spdesc != null">
+                SPDESC,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=DECIMAL},
+
+            <if test="baseurl != null">
+                #{baseurl,jdbcType=VARCHAR},
+            </if>
+            <if test="spname != null">
+                #{spname,jdbcType=VARCHAR},
+            </if>
+            <if test="key != null">
+                #{key,jdbcType=VARCHAR},
+            </if>
+            <if test="accountid != null">
+                #{accountid,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createtime,jdbcType=VARCHAR},
+            </if>
+            <if test="spdesc != null">
+                #{spdesc,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateSpInfoByCode" parameterType="string">
+        UPDATE T_SDP_SPINFO set BASEURL= #{baseurl,jdbcType=VARCHAR}, SPNAME =#{spname,jdbcType=VARCHAR},
+        KEY = #{key,jdbcType=VARCHAR}, ACCOUNTID=#{accountid,jdbcType=VARCHAR},TYPE=#{type,jdbcType=VARCHAR},
+        CODE = #{code,jdbcType=VARCHAR},STATUS = #{status,jdbcType=VARCHAR},CREATETIME=#{createtime,jdbcType=VARCHAR},
+        SPDESC=#{spdesc,jdbcType=VARCHAR}WHERE
+        CODE=#{code,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateSpInfoBySelective" parameterType="cn.com.mewifi.sdp.bo.SpInformation">
+        UPDATE T_SDP_SPINFO set
+        <if test="baseurl !=null">BASEURL= #{baseurl,jdbcType=VARCHAR},</if>
+        <if test="spname !=null">SPNAME =#{spname,jdbcType=VARCHAR},</if>
+        <if test="key !=null">KEY = #{key,jdbcType=VARCHAR},</if>
+        <if test="accountid !=null">ACCOUNTID=#{accountid,jdbcType=VARCHAR},</if>
+        <if test="type !=null">TYPE=#{type,jdbcType=VARCHAR},</if>
+        <if test="createtime !=null">CREATETIME= #{createtime,jdbcType=VARCHAR},</if>
+        <if test="status !=null">STATUS = #{status,jdbcType=VARCHAR},</if>
+        <if test="spdesc !=null"> SPDESC=#{spdesc,jdbcType=VARCHAR}</if>
+        WHERE CODE=#{code,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteSpInfoByProductCode" parameterType="string">
+        delete from T_SDP_SPINFO
+        where CODE = #{code,jdbcType=DECIMAL}
+    </delete>
+
+    <delete id="batchDeleteSpInfosBySpInfoCodes" parameterType="java.lang.String">
+        delete from T_SDP_SPINFO
+        where CODE in
+        <foreach collection="list" item="code" separator="," open="(" close=")">
+            #{code,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+</mapper>

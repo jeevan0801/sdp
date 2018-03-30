@@ -1,16 +1,7 @@
 package cn.com.mewifi.sdp.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
-
 import cn.com.mewifi.core.util.JSONUtil;
+import cn.com.mewifi.sdp.handler.PayLogHandler;
 import cn.com.mewifi.sdp.service.IPayService;
 import cn.com.mewifi.sdp.util.ResultVOUtil;
 import cn.com.mewifi.sdp.vo.ResultVO;
@@ -18,6 +9,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * description: 支付接口
@@ -34,6 +33,9 @@ public class PayController {
     // @Qualifier("payServiceImplWeiXin")
     @Qualifier("payServiceImplAli")
     private IPayService payService;
+    @Autowired
+    private PayLogHandler payLogHandler;
+
     
     /**
      * 支付宝支付成功后页面通知 Get返回
@@ -84,8 +86,12 @@ public class PayController {
         @ApiImplicitParam(name = "productCode", value = "商品编码", required = true, dataType = "String", paramType = "query")})
     @PostMapping(value = "/pay")
     public ResultVO getPayUrl(@RequestParam("orderId") String orderId, @RequestParam("productCode") String productCode) {
-        String url = payService.getPayUrl(orderId,productCode);
-        ResultVO rs = ResultVOUtil.success(url);
+        String url = payService.getPayUrl(orderId, productCode);
+      //  ResultVO rs = ResultVOUtil.success(url);
+        ResultVO rs = null;
+        //支付日志
+        //todo:orderId isPay status需要去rs进行取值,spName
+        payLogHandler.insertPayLog(orderId,"1","支付宝","1");
         return rs;
     }
 }

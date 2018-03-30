@@ -16,5 +16,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 映射swagger-ui, 否则将无法访问
         registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        //registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/");
     }
 }

@@ -24,18 +24,20 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebMvc
 @Slf4j
 public class Main extends SpringBootServletInitializer {// implements CommandLineRunner {
-
+    
     @Autowired
     private PayWeiXinConfig payWeiXinConfig;
-
+    
     @SuppressWarnings("checkstyle:javadocmethod")
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);    }
+        SpringApplication.run(Main.class, args);
+    }
     
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-
-        log.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:"+payWeiXinConfig.getAppId());
+        
+       /* log.debug(
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:" + payWeiXinConfig.getAppId());*/
         return application.sources(Main.class);
     }
     

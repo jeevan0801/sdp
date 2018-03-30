@@ -1,8 +1,8 @@
 package cn.com.mewifi.sdp.bo.db;
 
-import lombok.Data;
-
 import java.util.Date;
+
+import lombok.Data;
 
 /**
  * 下游信息
@@ -15,15 +15,21 @@ import java.util.Date;
  */
 @Data
 public class ClientInfo {
-
-    private String userId; //分配给下游的id
+    
+    private String userId; // 分配给下游的id
+    
     private String userName; // 下游名称
-    private String key;  // 分配给下游的key; 重要, 不能泄露
+    
+    private String key; // 分配给下游的key; 重要, 不能泄露
+    
     private String serverIps; // 下游用于请求接口的服务器IP, 不在此列的ip请求接口将被禁用;
-    private String status; //状态;
-    private Date createTime; //创建时间
-    private Date expireTime; //失效时间
+    
+    private String status; // 状态;
+    
+    private Date createTime; // 创建时间
+    
+    private Date expireTime; // 失效时间
+    
     private String operator;// 创建者
-
-
+    
 }

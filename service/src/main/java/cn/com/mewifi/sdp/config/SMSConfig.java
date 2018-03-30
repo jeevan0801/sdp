@@ -18,7 +18,7 @@ import lombok.Data;
 @Data
 public class SMSConfig {
 
-    @Value("${maxCountPerDay}")
+   @Value("${maxCountPerDay}")
     private String maxCountPerDay;
 
     @Value("${maxInterval}")

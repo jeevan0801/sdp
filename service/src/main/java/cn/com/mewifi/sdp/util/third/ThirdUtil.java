@@ -1,4 +1,4 @@
-package cn.com.mewifi.core.util.third;
+package cn.com.mewifi.sdp.util.third;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,7 +12,7 @@ import java.util.TreeMap;
  *
  * date: 2017/8/14 16:19
  */
-public class MD5Util {
+public class ThirdUtil {
     
     /**
      * 天津鑫业之游提供的md5加密方法
@@ -23,7 +23,7 @@ public class MD5Util {
      * @param outputUpperCase 是否大写: false
      * @return
      */
-    public static final String digestXyzy(String s, String encoding, String algorithm, boolean outputUpperCase) {
+    public static final String md5ForXyzy(String s, String encoding, String algorithm, boolean outputUpperCase) {
         final char[] hex = "0123456789ABCDEF".toCharArray();
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
@@ -49,7 +49,7 @@ public class MD5Util {
      * @param key
      * @return
      */
-    public static String digestWO(TreeMap<String, String> tm, String key) {
+    public static String md5ForWO(TreeMap<String, String> tm, String key) {
         StringBuffer buf = new StringBuffer();
         for (Map.Entry<String, String> en : tm.entrySet()) {
             String name = en.getKey();

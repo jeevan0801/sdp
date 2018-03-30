@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.PayLogDao">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.PayLog">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ORDERLOGID" jdbcType="DECIMAL" property="orderlogid" />
+    <result column="CLIENTNAME" jdbcType="VARCHAR" property="clientname" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="CREATETIME" jdbcType="DATE" property="createtime" />
+    <result column="ISPAY" jdbcType="VARCHAR" property="ispay" />
+    <result column="PAYCODE" jdbcType="VARCHAR" property="paycode" />
+    <result column="SPNAME" jdbcType="VARCHAR" property="spname" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="RESUTLDESC" jdbcType="VARCHAR" property="resultdesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ORDERLOGID, CLIENTNAME, ACCOUNT, CREATETIME, ISPAY, PAYCODE, SPNAME, TYPE, 
+    STATUS, RESUTLDESC
+  </sql>
+
+  <insert id="insertPayLog" parameterType="cn.com.mewifi.sdp.bo.PayLog">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_PAYLOG.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_PAYLOG (ID, ORDERLOGID, CLIENTNAME, 
+      ACCOUNT, CREATETIME, ISPAY, 
+      PAYCODE, SPNAME, TYPE, 
+      STATUS, RESULTDESC)
+    values (#{id,jdbcType=DECIMAL}, #{orderlogid,jdbcType=DECIMAL}, #{clientname,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}, #{ispay,jdbcType=VARCHAR}, 
+      #{paycode,jdbcType=VARCHAR}, #{spname,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{resultdesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertPayLogSelective" parameterType="cn.com.mewifi.sdp.bo.PayLog">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_PAYLOG.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_PAYLOG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="orderlogid != null">
+        ORDERLOGID,
+      </if>
+      <if test="clientname != null">
+        CLIENTNAME,
+      </if>
+      <if test="account != null">
+        ACCOUNT,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="ispay != null">
+        ISPAY,
+      </if>
+      <if test="paycode != null">
+        PAYCODE,
+      </if>
+      <if test="spname != null">
+        SPNAME,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=DECIMAL},
+      <if test="orderlogid != null">
+        #{orderlogid,jdbcType=DECIMAL},
+      </if>
+      <if test="clientname != null">
+        #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="ispay != null">
+        #{ispay,jdbcType=VARCHAR},
+      </if>
+      <if test="paycode != null">
+        #{paycode,jdbcType=VARCHAR},
+      </if>
+      <if test="spname != null">
+        #{spname,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        #{resultdesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updatePayLogByPayLogCodeSelective" parameterType="cn.com.mewifi.sdp.bo.PayLog">
+    update T_SDP_PAYLOG
+    <set>
+      <if test="orderlogid != null">
+        ORDERLOGID = #{orderlogid,jdbcType=DECIMAL},
+      </if>
+      <if test="clientname != null">
+        CLIENTNAME = #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CREATETIME = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="ispay != null">
+        ISPAY = #{ispay,jdbcType=VARCHAR},
+      </if>
+      <if test="spname != null">
+        SPNAME = #{spname,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC = #{resultdesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where  PAYCODE = #{paycode,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePayLogByPayLogCode" parameterType="cn.com.mewifi.sdp.bo.PayLog">
+    update T_SDP_PAYLOG
+    set ORDERLOGID = #{orderlogid,jdbcType=DECIMAL},
+      CLIENTNAME = #{clientname,jdbcType=VARCHAR},
+      ACCOUNT = #{account,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=DATE},
+      ISPAY = #{ispay,jdbcType=VARCHAR},
+      SPNAME = #{spname,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      RESULTDESC = #{resultdesc,jdbcType=VARCHAR}
+    where  PAYCODE = #{paycode,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

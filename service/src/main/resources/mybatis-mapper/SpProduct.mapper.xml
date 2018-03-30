@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.SpProductInfoDao">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.SpProduct">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="BASEPRODUCTCODE" jdbcType="VARCHAR" property="baseproductcode" />
+    <result column="SPCODE" jdbcType="DECIMAL" property="spcode" />
+    <result column="PRODUCTNAME" jdbcType="VARCHAR" property="productname" />
+    <result column="CREATETIME" jdbcType="DATE" property="createtime" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="PRICE" jdbcType="DECIMAL" property="price" />
+    <result column="COST" jdbcType="DECIMAL" property="cost" />
+    <result column="ORDERAMOUNT" jdbcType="DECIMAL" property="orderamount" />
+    <result column="SUCCESSAMOUNT" jdbcType="DECIMAL" property="successamount" />
+    <result column="FAILAMOUNT" jdbcType="DECIMAL" property="failamount" />
+    <result column="SUCCESSRATE" jdbcType="DECIMAL" property="successrate" />
+    <result column="SORTID" jdbcType="VARCHAR" property="sortid" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <discriminator javaType="java.lang.String" column="TYPE">
+      <case value="mem" resultType="cn.com.mewifi.sdp.bo.memberbenefit.MemSpProduct"></case>
+    </discriminator>
+  </resultMap>
+  <sql id="Base_Column_List">
+    b.ID, b.CODE, b.BASEPRODUCTCODE, b.SPCODE, b.PRODUCTNAME, b.CREATETIME, b.STATUS, b.PRICE, b.COST,
+    b.ORDERAMOUNT, b.SUCCESSAMOUNT, b.FAILAMOUNT, b.SUCCESSRATE, b.SORTID, b.TYPE
+  </sql>
+  <sql id="Base_query_condition">
+    <trim prefix="where" prefixOverrides="AND |OR">
+      <if test="id != null">
+       and b.ID= #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="code != null">
+        and b.CODE=#{code,jdbcType=VARCHAR},
+      </if>
+      <if test="baseproductcode != null">
+        and b.BASEPRODUCTCODE = #{baseproductcode,jdbcType=VARCHAR},
+      </if>
+      <if test="spcode != null">
+        and b.SPCODE = #{spcode,jdbcType=DECIMAL},
+      </if>
+      <if test="productname != null">
+        and b.PRODUCTNAME = #{productname,jdbcType=VARCHAR},
+      </if>
+
+      <if test="status != null">
+        and b.STATUS=#{status,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        and b.PRICE= #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null">
+        and b.COST = #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="orderamount != null">
+        and b.ORDERAMOUNT = #{orderamount,jdbcType=DECIMAL},
+      </if>
+      <if test="successamount != null">
+        and b.SUCCESSAMOUNT =  #{successamount,jdbcType=DECIMAL},
+      </if>
+      <if test="failamount != null">
+        and b.FAILAMOUNT = #{failamount,jdbcType=DECIMAL},
+      </if>
+      <if test="successrate != null">
+        and b.SUCCESSRATE = #{successrate,jdbcType=DECIMAL},
+      </if>
+      <if test="sortid != null">
+        and b.SORTID = #{sortid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        and b.TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null">
+        and b.CREATETIME &gt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="enddate != null">
+        and b.CREATETIME &lt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+        and b.CREATETIME = #{createtime,jdbcType=VARCHAR}
+      </if>
+
+    </trim>
+  </sql>
+
+  <select id="selectSpProductBySpProductCode" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from T_SDP_SPPRODUCT b
+    <if test="type==null or type == '' or type=='mem'">where b.CODE = #{code,jdbcType=VARCHAR} </if>
+  </select>
+  <select id="selectSpProductByBaseProductCodeAndLowCost" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from T_SDP_SPPRODUCT b
+    <if test="type==null or type == '' or type=='mem'">where b.BASEPRODUCTCODE = #{baseproductcode,jdbcType=VARCHAR} and b.STATUS='1' ORDER BY b.COST </if>
+  </select>
+  <select id="selectAllSpProducts" resultMap="BaseResultMap" parameterType="string">
+    select
+    <include refid="Base_Column_List"/>
+    from T_SDP_SPPRODUCT b
+    <if test="_parameter==null or _parameter == '' or _parameter=='mem'"></if> ORDER BY b.CREATETIME
+  </select>
+  <select id="selectSpProductsByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List"/>
+    from T_SDP_SPPRODUCT b
+    <if test="type == null or type == ''  or type=='mem'">
+      <include refid="Base_query_condition"/>
+    </if>
+    <if test="sortid!=null">
+      order by ${sortid}
+    </if>
+  </select>
+ 
+
+</mapper>

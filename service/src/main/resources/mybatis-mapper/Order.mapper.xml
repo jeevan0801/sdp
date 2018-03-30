@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.mewifi.sdp.dao.OrderInfoDao">
+  <resultMap id="BaseResultMap" type="cn.com.mewifi.sdp.bo.Order">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ORDERNAME" jdbcType="VARCHAR" property="ordername" />
+    <result column="ORDERNUMBER" jdbcType="VARCHAR" property="ordernumber" />
+    <result column="CREATETIME" jdbcType="DATE" property="createtime" />
+    <result column="UPDATETIME" jdbcType="DATE" property="updatetime" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="RESULTDESC" jdbcType="VARCHAR" property="resultdesc" />
+    <result column="TOTALPRICE" jdbcType="DECIMAL" property="totalprice" />
+    <result column="TOTAL" jdbcType="DECIMAL" property="total" />
+    <result column="PAYMETHOD" jdbcType="VARCHAR" property="paymethod" />
+    <result column="ORDERDESC" jdbcType="VARCHAR" property="orderdesc" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="SORTID" jdbcType="VARCHAR" property="sortid" />
+    <discriminator javaType="java.lang.String" column="TYPE">
+      <case value="mem" resultType="cn.com.mewifi.sdp.bo.memberbenefit.MemOrder"></case>
+    </discriminator>
+  </resultMap>
+  <sql id="Base_Column_List">
+    b.ID, b.ORDERNAME, b.ORDERNUMBER, b.CREATETIME, b.UPDATETIME, b.STATUS, b.RESULTDESC, b.TOTALPRICE,
+    b.TOTAL, b.PAYMETHOD, b.ORDERDESC,b.TYPE
+  </sql>
+
+  <sql id="Base_query_condition">
+    <trim prefix="where" prefixOverrides="AND |OR">
+      <if test="id != null">
+        and b.ID = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="ordername != null">
+        and b.ORDERNAME = #{ordername,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and b.STATUS = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="resultdesc != null">
+        and b.RESULTDESC = #{resultdesc,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and b.TYPE = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="startdate != null">
+        and b.CREATETIME &gt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="enddate != null">
+        and b.CREATETIME &lt;= #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+        and b.CREATETIME = #{createtime,jdbcType=VARCHAR}
+      </if>
+      <if test="totalprice!=null">
+        and b.TOTALPRICE = #{totalprice,jdbcType=DECIMAL}
+      </if>
+      <if test="total!=null">
+        and b.TOTAL = #{total,jdbcType=DECIMAL}
+      </if>
+      <if test="paymethod != null">
+        and b.PAYMETHOD = #{paymethod,jdbcType=VARCHAR}
+      </if>
+
+    </trim>
+  </sql>
+
+
+  <select id="selectOrderByOrderNumber" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_SDP_ORDER b
+    <if test="type==null or type == '' or type=='mem'">where b.ORDERNUMBER = #{ordernumber,jdbcType=VARCHAR}</if>
+  </select>
+  <select id="selectAllOrders" resultMap="BaseResultMap" parameterType="string">
+    select
+    <include refid="Base_Column_List"/>
+    from T_SDP_ORDER b
+    <if test="_parameter==null or _parameter == '' or _parameter=='mem'"></if> ORDER BY b.CREATETIME
+  </select>
+
+  <select id="selectOrdersByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List"/>
+    from T_SDP_ORDER b
+    <if test="type == null or type == ''  or type=='mem'">
+      <include refid="Base_query_condition"/>
+    </if>
+    <if test="sortid!=null">
+      order by ${sortid}
+    </if>
+  </select>
+
+  <insert id="insertOrder" parameterType="cn.com.mewifi.sdp.bo.Order">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_ORDER.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_ORDER (ID, ORDERNAME, ORDERNUMBER,
+    CREATETIME, UPDATETIME, STATUS,
+    RESULTDESC, TOTALPRICE, TOTAL,
+    PAYMETHOD, ORDERDESC, TYPE
+    )
+    values (#{id,jdbcType=DECIMAL}, #{ordername,jdbcType=VARCHAR}, #{ordernumber,jdbcType=VARCHAR},
+    #{createtime,jdbcType=DATE}, #{updatetime,jdbcType=DATE}, #{status,jdbcType=VARCHAR},
+    #{resultdesc,jdbcType=VARCHAR}, #{totalprice,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL},
+    #{paymethod,jdbcType=VARCHAR}, #{orderdesc,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertOrderSelective" parameterType="cn.com.mewifi.sdp.bo.Order">
+    <selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="id">
+      SELECT SEQ_SDP_ORDER.nextval FROM DUAL
+    </selectKey>
+    insert into T_SDP_ORDER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="ordername != null">
+        ORDERNAME,
+      </if>
+      <if test="ordernumber != null">
+        ORDERNUMBER,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="updatetime != null">
+        UPDATETIME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC,
+      </if>
+      <if test="totalprice != null">
+        TOTALPRICE,
+      </if>
+      <if test="total != null">
+        TOTAL,
+      </if>
+      <if test="paymethod != null">
+        PAYMETHOD,
+      </if>
+      <if test="orderdesc != null">
+        ORDERDESC,
+      </if>
+
+      <if test="type != null">
+        TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=DECIMAL},
+      <if test="ordername != null">
+        #{ordername,jdbcType=VARCHAR},
+      </if>
+
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        #{resultdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="totalprice != null">
+        #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="paymethod != null">
+        #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="orderdesc != null">
+        #{orderdesc,jdbcType=VARCHAR},
+      </if>
+
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateOrderByOrderNumberSelective" parameterType="cn.com.mewifi.sdp.bo.Order">
+    update T_SDP_ORDER
+    <set>
+      <if test="ordername != null">
+        ORDERNAME = #{ordername,jdbcType=VARCHAR},
+      </if>
+
+      <if test="createtime != null">
+        CREATETIME = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        UPDATETIME = #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="resultdesc != null">
+        RESULTDESC = #{resultdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="totalprice != null">
+        TOTALPRICE = #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null">
+        TOTAL = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="paymethod != null">
+        PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      </if>
+      <if test="orderdesc != null">
+        ORDERDESC = #{orderdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE=#{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where  ORDERNUMBER = #{ordernumber,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateOderByOrderNumber" parameterType="cn.com.mewifi.sdp.bo.Order">
+    update T_SDP_ORDER
+    set ORDERNAME = #{ordername,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=DATE},
+      UPDATETIME = #{updatetime,jdbcType=DATE},
+      STATUS = #{status,jdbcType=VARCHAR},
+      RESULTDESC = #{resultdesc,jdbcType=VARCHAR},
+      TOTALPRICE = #{totalprice,jdbcType=DECIMAL},
+      TOTAL = #{total,jdbcType=DECIMAL},
+      PAYMETHOD = #{paymethod,jdbcType=VARCHAR},
+      ORDERDESC = #{orderdesc,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+    where  ORDERNUMBER = #{ordernumber,jdbcType=VARCHAR}
+  </update>
+
+
+  <delete id="deleteOrderByOrderNumber" parameterType="string">
+    delete from T_SDP_ORDER
+    where  ORDERNUMBER = #{ordernumber,jdbcType=VARCHAR}
+  </delete>
+</mapper>

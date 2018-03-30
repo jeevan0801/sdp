@@ -5,7 +5,7 @@
 <generatorConfiguration>
     <!-- 引入配置文件 -->
     <properties resource="mybatis-generator/mybatisGeneratorinit.properties"/>
-    <classPathEntry location="/Users/wangjc/Desktop/sdp/service/lib/ojdbc14.jar"/>
+    <classPathEntry location="E:/ideaworkspace/workspace20170905/sdp/sdp/service/lib/ojdbc14.jar"/>
 
     <!-- 一个数据库一个context -->
     <!--defaultModelType="flat" 大数据字段，不分表 -->
@@ -36,7 +36,7 @@
 
         <!-- 需要自定义的内容 -->
         <!-- 生成实体类地址 -->
-        <javaModelGenerator targetPackage="cn.com.mewifi.sdp.bo.db" targetProject="${project}">
+        <javaModelGenerator targetPackage="cn.com.mewifi.sdp.bo" targetProject="${project}">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -50,18 +50,20 @@
         </javaClientGenerator>
 
 
-        <table tableName="T_PUB_SENDMESSAGELOG" domainObjectName="SendMessageLog" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <columnRenamingRule searchString="^T" replaceString=""/>
-        </table>
-        <table tableName="T_PUB_AUTHCODELOG" domainObjectName="AuthCodeLog" enableCountByExample="false"
+
+        <table tableName="T_PUB_ORDERNORECORD" domainObjectName="OrderNoRecord" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>
             <columnRenamingRule searchString="^T" replaceString=""/>
         </table>
 
+    <!--    <table tableName="T_PUB_AUTHCODELOG" domainObjectName="AuthCodeLog" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+            <columnRenamingRule searchString="^T" replaceString=""/>
+        </table>
+-->
     </context>
 </generatorConfiguration>

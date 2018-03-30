@@ -1,14 +1,5 @@
 package cn.com.mewifi.sdp.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import com.alibaba.fastjson.JSONObject;
-
 import cn.com.mewifi.core.util.HttpUtil;
 import cn.com.mewifi.core.util.JSONUtil;
 import cn.com.mewifi.sdp.bo.db.SendMessageLog;
@@ -16,7 +7,14 @@ import cn.com.mewifi.sdp.constant.PubConstant;
 import cn.com.mewifi.sdp.dao.SendMessageLogMapper;
 import cn.com.mewifi.sdp.service.AbstractSmsService;
 import cn.com.mewifi.sdp.service.IPubService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 短信网短信发送
@@ -66,10 +64,11 @@ public class SmsServiceImplDuanXinWang extends AbstractSmsService {// implements
         sendMessageLog.setReceiver(mobileNo);
         sendMessageLog.setContent(content);
         sendMessageLog.setMessagecode(
-            pubService.getSerialNo(PubConstant.ModuleType.SMS.getCode(), 20, PubConstant.Bool.YES.getCode()));
+                pubService.getSerialNo(PubConstant.ModuleType.SMS.getCode(), 20, PubConstant.Bool.YES.getCode()));
         sendMessageLog.setMessagetype(PubConstant.MessageType.SMS.getCode());
         sendMessageLog.setSendchannel(super.getChannelCode());
-        Integer smsLogId = sendMessageLogMapper.insert(sendMessageLog);
+         sendMessageLogMapper.insert(sendMessageLog);
+        Integer smsLogId =  Integer.valueOf(String.valueOf(sendMessageLog.getId()));
         super.setLogId(smsLogId);
         
         return rsJson;
